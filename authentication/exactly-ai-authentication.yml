@@ -1,0 +1,12 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/exactly-ai-public-openapi-original.json
+summary:
+  types:
+  - http
+schemes:
+- name: APITokenAuth
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/exactly-ai-public-openapi-original.json
