@@ -1,0 +1,1302 @@
+openapi: 3.1.0
+info:
+  title: Exactly Public Images v1 Models v1 API
+  version: 1.0.0
+  description: ''
+servers: []
+tags:
+- name: Models v1
+paths:
+  /public/v1/models/:
+    post:
+      operationId: durer_backend_public_api_api_routes_models_create_model
+      summary: Create a new model
+      parameters: []
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateModelOut'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Create a new model for custom style.
+
+
+        The model starts in draft state and can be trained with training images.
+
+
+        **Usage:**
+
+        1. Create a model with a descriptive name
+
+        2. Optionally provide custom JSON data (max 64KB) for your application''s use
+
+        3. Add training images using the `POST .../{uid}/train_images/` endpoint
+
+        4. Train the model using the `POST .../{uid}/train/` endpoint
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model name must be 1-255 characters
+
+        - Custom data (if provided) must be valid JSON under 64KB
+
+
+        **Returns:**
+
+        - 201: Model created successfully with unique identifier
+
+        - 401: Invalid or missing API token'
+      tags:
+      - Models v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateModelIn'
+        required: true
+      security:
+      - APITokenAuth: []
+    get:
+      operationId: durer_backend_public_api_api_routes_models_list_models
+      summary: List user's models
+      parameters:
+      - in: query
+        name: limit
+        schema:
+          default: 100
+          description: Limit the number of results returned
+          maximum: 5000
+          minimum: 1
+          title: Limit
+          type: integer
+        required: false
+        description: Limit the number of results returned
+      - in: query
+        name: offset
+        schema:
+          default: 0
+          description: Offset the results by this number
+          minimum: 0
+          title: Offset
+          type: integer
+        required: false
+        description: Offset the results by this number
+      - in: query
+        name: active
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Filter by active status (trained models)
+          title: Active
+        required: false
+        description: Filter by active status (trained models)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponse_ModelOut_'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'List all models owned by the authenticated user.
+
+
+        This endpoint returns a paginated list of models owned by the requesting user.
+
+
+        **Usage:**
+
+        1. Request a list of models with optional filtering by active status
+
+        2. Use pagination parameters to control the number of results
+
+
+        **Query Parameters:**
+
+        - `active`: Optional boolean to filter by active (trained) models
+
+        - `limit`: Number of results per page (default: 100, max: 5000)
+
+        - `offset`: Number of results to skip (default: 0)
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+
+        **Returns:**
+
+        - 200: Paginated list of models with total count
+
+        - 401: Invalid or missing API token'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+  /public/v1/models/{uid}/:
+    get:
+      operationId: durer_backend_public_api_api_routes_models_get_model
+      summary: Get a model by its unique identifier
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelDetailOut'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Retrieve a model by its unique identifier.
+
+
+        This endpoint returns the model''s details, including its name, creation date, and status.
+
+
+        **Usage:**
+
+        1. Retrieve a model by its unique identifier
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must be owned by, shared with, or publicly accessible to the requesting user
+
+
+        **Returns:**
+
+        - 200: Model details
+
+        - 401: Invalid or missing API token
+
+        - 404: Model not found or not accessible'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+    delete:
+      operationId: durer_backend_public_api_api_routes_models_delete_model
+      summary: Delete a model by its unique identifier
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Delete a model by its unique identifier.
+
+
+        This endpoint marks the model as deleted.
+
+
+        **Usage:**
+
+        1. Delete a model by its unique identifier
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must exist and be owned by the requesting user
+
+
+        **Returns:**
+
+        - 200: Model deleted successfully
+
+        - 401: Invalid or missing API token
+
+        - 404: Model not found'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+  /public/v1/models/{uid}/draft/:
+    post:
+      operationId: durer_backend_public_api_api_routes_models_make_model_draft
+      summary: Put a model into draft state
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelOut'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Put a model into draft state.
+
+
+        This endpoint puts a model into draft state, allowing it to be retrained.
+
+
+        Note: The model can still be used for generating images until it starts training.
+
+
+        **Usage:**
+
+        1. Put a model into draft state
+
+        2. Add new training images to the model with the `POST .../{uid}/train_images/` endpoint
+
+        3. Delete unnecessary training images with the `DELETE.../{uid}/train_images/{image_uid}/` endpoint
+
+        4. Train the model using the `POST .../{uid}/train/` endpoint
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must exist and be owned by the requesting user
+
+
+        **Returns:**
+
+        - 200: Model put into draft state
+
+        - 401: Invalid or missing API token
+
+        - 404: Model not found'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+  /public/v1/models/{uid}/train_images/:
+    post:
+      operationId: durer_backend_public_api_api_routes_models_add_train_image
+      summary: Add a training image to a model
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StylisationItemOut'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Add a training image to a model.
+
+
+        This endpoint adds a new training image to the model''s draft.
+
+        The image will be processed and added to the model''s training dataset.
+
+
+        **Usage:**
+
+        1. Add a training image to a model
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must exist and be owned by the requesting user
+
+        - Image must be a valid image file (max 50MB)
+
+
+        **Returns:**
+
+        - 201: Training image added successfully
+
+        - 400: Invalid image file
+
+        - 401: Invalid or missing API token
+
+        - 403: Model is not in the draft state
+
+        - 404: Model not found'
+      tags:
+      - Models v1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                image:
+                  format: binary
+                  title: Image
+                  type: string
+              required:
+              - image
+              title: FileParams
+              type: object
+        required: true
+      security:
+      - APITokenAuth: []
+    get:
+      operationId: durer_backend_public_api_api_routes_models_list_train_images
+      summary: List training images for a model
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      - in: query
+        name: limit
+        schema:
+          default: 100
+          description: Limit the number of results returned
+          maximum: 5000
+          minimum: 1
+          title: Limit
+          type: integer
+        required: false
+        description: Limit the number of results returned
+      - in: query
+        name: offset
+        schema:
+          default: 0
+          description: Offset the results by this number
+          minimum: 0
+          title: Offset
+          type: integer
+        required: false
+        description: Offset the results by this number
+      - in: query
+        name: include_filtered
+        schema:
+          default: false
+          description: Include filtered images in the response
+          title: Include Filtered
+          type: boolean
+        required: false
+        description: Include filtered images in the response
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponse_StylisationItemOut_'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'List all training images for a model.
+
+
+        This endpoint returns a paginated list of training images for the specified model.
+
+
+        **Usage:**
+
+        1. Request a list of training images for a model
+
+        2. Use pagination parameters to control the number of results
+
+        3. Optionally include filtered images that triggered hard filters
+
+
+        **Query Parameters:**
+
+        - `limit`: Number of results per page (default: 100, max: 5000)
+
+        - `offset`: Number of results to skip (default: 0)
+
+        - `include_filtered`: Include filtered images in results (default: false)
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must exist and be owned by the requesting user
+
+
+        **Returns:**
+
+        - 200: Paginated list of training images with total count
+
+        - 401: Invalid or missing API token
+
+        - 404: Model not found'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+  /public/v1/models/{uid}/train_images/{image_uid}/:
+    delete:
+      operationId: durer_backend_public_api_api_routes_models_delete_item
+      summary: Delete a training image from a model
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      - in: path
+        name: image_uid
+        schema:
+          format: uuid
+          title: Image Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Delete a training image from a model.
+
+
+        This endpoint removes a training image from the model''s draft.
+
+
+        **Usage:**
+
+        1. Delete a training image from a model
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must exist and be owned by the requesting user
+
+        - Image must exist and be part of the model''s training dataset
+
+
+        **Returns:**
+
+        - 200: Training image deleted successfully
+
+        - 401: Invalid or missing API token
+
+        - 404: Model or image not found'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+  /public/v1/models/{uid}/train/:
+    post:
+      operationId: durer_backend_public_api_api_routes_models_run_model_training
+      summary: Train a model
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Train a model using its training dataset.
+
+
+        This endpoint starts the training process for the model.
+
+        The model will be trained using its training dataset.
+
+
+        **Usage:**
+
+        1. Train a model
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must exist and be owned by the requesting user
+
+        - Model must have a training dataset
+
+
+        **Returns:**
+
+        - 200: Model training started successfully
+
+        - 400: Invalid model state
+
+        - 401: Invalid or missing API token
+
+        - 403: Model is not in the draft state
+
+        - 404: Model not found'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+  /public/v1/models/{uid}/cancel/:
+    post:
+      operationId: durer_backend_public_api_api_routes_models_cancel_model_training
+      summary: Cancel Model Training
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Cancel a model training.
+
+
+        This endpoint cancels the training process for the model.
+
+
+        **Usage:**
+
+        1. Run a model training
+
+        2. Cancel a model training
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must exist and be owned by the requesting user
+
+        - Model must be in the training state
+
+
+        **Returns:**
+
+        - 200: Model training canceled successfully
+
+        - 401: Invalid or missing API token
+
+        - 403: Model is not in the training state
+
+        - 404: Model not found'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+  /public/v1/models/{uid}/train/progress/:
+    get:
+      operationId: durer_backend_public_api_api_routes_models_get_model_training_progress
+      summary: Get Model Training Progress
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelTrainProgressOut'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Get the training progress for a model.
+
+
+        This endpoint returns the current training progress for the specified model.
+
+        The progress is returned as a percentage value from 0 to 100.
+
+
+        **Behavior:**
+
+        - If the model is active (training completed), returns 100% progress
+
+        - If the model is still training, returns current progress (0-99%)
+
+        - If no training status is found, returns 0% progress
+
+
+        **Usage:**
+
+        1. Check training progress during model training
+
+        2. Monitor training completion status
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must exist and be owned by the requesting user
+
+
+        **Returns:**
+
+        - 200: Training progress percentage (0-100)
+
+        - 401: Invalid or missing API token
+
+        - 404: Model not found'
+      tags:
+      - Models v1
+      security:
+      - APITokenAuth: []
+  /public/v1/models/{uid}/enhance_prompt/:
+    post:
+      operationId: durer_backend_public_api_api_routes_models_enhance_prompt_for_model
+      summary: Enhance a prompt for given model
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhancedPromptOut'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Enhance a prompt for a given model.
+
+
+        **Usage:**
+
+        1. Enhance a prompt for a specific model
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Model must be owned by, shared with, or publicly accessible to the requesting user
+
+
+        **Returns:**
+
+        - 201: Enhanced prompt
+
+        - 401: Invalid or missing API token
+
+        - 404: Model not found or not accessible
+
+        - 500: Internal server error'
+      tags:
+      - Models v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnhancePromptIn'
+        required: true
+      security:
+      - APITokenAuth: []
+components:
+  schemas:
+    GenerationParamsOut:
+      properties:
+        supported_dimensions:
+          description: Supported image dimensions as [width, height] pairs
+          items:
+            maxItems: 2
+            minItems: 2
+            prefixItems:
+            - type: integer
+            - type: integer
+            type: array
+          title: Supported Dimensions
+          type: array
+        size_optional:
+          description: Whether the size parameter can be omitted
+          title: Size Optional
+          type: boolean
+        max_reference_images:
+          description: Maximum number of reference images allowed
+          title: Max Reference Images
+          type: integer
+        duration:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Duration in seconds (video models only)
+          title: Duration
+        resolution:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Resolution tier (e.g. 1024, 2048)
+          title: Resolution
+        fps:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Frames per second (video models only)
+          title: Fps
+      required:
+      - supported_dimensions
+      - size_optional
+      - max_reference_images
+      title: GenerationParamsOut
+      type: object
+    StylisationItemOut:
+      properties:
+        uid:
+          description: Unique identifier for the training image
+          format: uuid
+          title: Uid
+          type: string
+        image:
+          $ref: '#/components/schemas/StylisationItemImageOut'
+          description: Image details and URLs
+        filters:
+          description: List of filters applied to this image
+          items:
+            $ref: '#/components/schemas/StylisationItemFilterOut2'
+          title: Filters
+          type: array
+      required:
+      - uid
+      - image
+      - filters
+      title: StylisationItemOut
+      type: object
+    EnhancePromptIn:
+      properties:
+        prompt:
+          description: Text prompt to enhance
+          maxLength: 10000
+          minLength: 1
+          title: Prompt
+          type: string
+        n_images:
+          default: 1
+          description: Number of images which will be generated using the enhanced prompt
+          exclusiveMinimum: 0
+          title: N Images
+          type: integer
+      required:
+      - prompt
+      title: EnhancePromptIn
+      type: object
+    EnhancedPromptOut:
+      properties:
+        prompt:
+          description: Enhanced text prompt
+          title: Prompt
+          type: string
+      required:
+      - prompt
+      title: EnhancedPromptOut
+      type: object
+    ModelOut:
+      properties:
+        uid:
+          description: Unique identifier for the model
+          format: uuid
+          title: Uid
+          type: string
+        name:
+          description: Display name of the model
+          title: Name
+          type: string
+        active:
+          description: Whether the model is trained and ready for use
+          title: Active
+          type: boolean
+        custom_data:
+          anyOf:
+          - type: object
+          - type: 'null'
+          description: Custom JSON data provided by the user
+          title: Custom Data
+        status:
+          $ref: '#/components/schemas/ModelStatus'
+          description: Current status of the model
+      required:
+      - uid
+      - name
+      - active
+      - status
+      title: ModelOut
+      type: object
+    CreateModelOut:
+      properties:
+        uid:
+          description: Unique identifier for the created model
+          format: uuid
+          title: Uid
+          type: string
+      required:
+      - uid
+      title: CreateModelOut
+      type: object
+    CreateModelIn:
+      properties:
+        name:
+          description: Display name of the model
+          maxLength: 255
+          minLength: 1
+          title: Name
+          type: string
+        custom_data:
+          anyOf:
+          - type: object
+          - type: 'null'
+          description: Optional custom JSON data to store with the model (max 64KB)
+          title: Custom Data
+      required:
+      - name
+      title: CreateModelIn
+      type: object
+    DurerError:
+      properties:
+        message:
+          description: Error message
+          examples:
+          - Something went wrong
+          title: Message
+          type: string
+        client_message:
+          description: Error message for the client
+          examples:
+          - Something went wrong
+          title: Client Message
+          type: string
+      required:
+      - message
+      title: DurerError
+      type: object
+    UrlSetSchema:
+      description: An url set for an image.
+      properties:
+        hires:
+          $ref: '#/components/schemas/UrlSetEntrySchema'
+        lores:
+          $ref: '#/components/schemas/UrlSetEntrySchema'
+      required:
+      - hires
+      - lores
+      title: UrlSetSchema
+      type: object
+    UrlSetEntrySchema:
+      description: A single url data for an url set.
+      properties:
+        url:
+          format: uri
+          minLength: 1
+          title: Url
+          type: string
+        width:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Width
+        height:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Height
+        watermark:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Watermark
+      required:
+      - url
+      title: UrlSetEntrySchema
+      type: object
+    ModelDetailOut:
+      properties:
+        uid:
+          description: Unique identifier for the model
+          format: uuid
+          title: Uid
+          type: string
+        name:
+          description: Display name of the model
+          title: Name
+          type: string
+        active:
+          description: Whether the model is trained and ready for use
+          title: Active
+          type: boolean
+        custom_data:
+          anyOf:
+          - type: object
+          - type: 'null'
+          description: Custom JSON data provided by the user
+          title: Custom Data
+        status:
+          $ref: '#/components/schemas/ModelStatus'
+          description: Current status of the model
+        generation_params:
+          description: Generation parameters per resolution tier
+          items:
+            $ref: '#/components/schemas/GenerationParamsOut'
+          title: Generation Params
+          type: array
+        available_purposes:
+          description: Available reference image purposes for this model
+          items:
+            type: string
+          title: Available Purposes
+          type: array
+        available_qualities:
+          description: Allowed values for the `quality` parameter on this model. Empty if quality is not supported.
+          items:
+            type: string
+          title: Available Qualities
+          type: array
+      required:
+      - uid
+      - name
+      - active
+      - status
+      - generation_params
+      - available_purposes
+      title: ModelDetailOut
+      type: object
+    DurerMessage:
+      properties:
+        message:
+          description: Message
+          examples:
+          - success
+          title: Message
+          type: string
+      required:
+      - message
+      title: DurerMessage
+      type: object
+    ModelTrainProgressOut:
+      properties:
+        progress:
+          description: Training progress in percentage (0-100)
+          maximum: 100
+          minimum: 0
+          title: Progress
+          type: integer
+      required:
+      - progress
+      title: ModelTrainProgressOut
+      type: object
+    PaginatedResponse_StylisationItemOut_:
+      properties:
+        items:
+          description: The list of results
+          items:
+            $ref: '#/components/schemas/StylisationItemOut'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        total_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Count
+      required:
+      - items
+      - count
+      title: PaginatedResponse[StylisationItemOut]
+      type: object
+    StylisationItemFilterOut2:
+      properties:
+        name:
+          description: Name of the filter applied
+          title: Name
+          type: string
+        level:
+          description: Filter severity level (HARD or SOFT)
+          title: Level
+          type: string
+        is_triggered:
+          description: Whether this filter was triggered
+          title: Is Triggered
+          type: boolean
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Reason why the filter was triggered
+          title: Reason
+        is_ignored:
+          description: Whether this filter result is ignored
+          title: Is Ignored
+          type: boolean
+      required:
+      - name
+      - level
+      - is_triggered
+      - is_ignored
+      title: StylisationItemFilterOut2
+      type: object
+    StylisationItemImageOut:
+      properties:
+        uid:
+          description: Unique identifier for the image
+          format: uuid
+          title: Uid
+          type: string
+        url_set:
+          $ref: '#/components/schemas/UrlSetSchema'
+          description: Set of image URLs in different sizes
+        width:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Original image width in pixels
+          title: Width
+        height:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Original image height in pixels
+          title: Height
+      required:
+      - uid
+      - url_set
+      title: StylisationItemImageOut
+      type: object
+    ModelStatus:
+      description: Model status enum for API responses
+      enum:
+      - draft
+      - training
+      - ready
+      - deleted
+      title: ModelStatus
+      type: string
+    PaginatedResponse_ModelOut_:
+      properties:
+        items:
+          description: The list of results
+          items:
+            $ref: '#/components/schemas/ModelOut'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        total_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Count
+      required:
+      - items
+      - count
+      title: PaginatedResponse[ModelOut]
+      type: object
+  securitySchemes:
+    APITokenAuth:
+      type: http
+      scheme: bearer

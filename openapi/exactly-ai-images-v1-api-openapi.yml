@@ -1,0 +1,802 @@
+openapi: 3.1.0
+info:
+  title: Exactly Public Images v1 API
+  version: 1.0.0
+  description: ''
+servers: []
+tags:
+- name: Images v1
+paths:
+  /public/v1/images/:
+    post:
+      operationId: durer_backend_public_api_api_routes_images_generate_images
+      summary: Generate images using style model
+      parameters: []
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateImageOut'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/GenerateImageOut'
+                - $ref: '#/components/schemas/DurerError'
+                title: Response
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: "Generate images using a trained style model.\n\nThis endpoint creates images from text prompts using your custom-trained style model.\nYou can optionally provide reference images to guide the generation process.\n\n**Note:** For style models trained via API, the requested size will be rounded to the nearest\navailable size (e.g., 1000x1000 → 1024x1024). For other models, you must provide an exact\nsize from the model's supported dimensions.\n\n**Basic Usage:**\n```json\n{\n    \"prompt\": \"a cat in a garden\",\n    \"num_images\": 4,\n    \"model_uid\": \"your-model-uuid\",\n    \"size\": [1024, 1024]\n}\n```\n\n**With Reference Images:**\n```json\n{\n    \"prompt\": \"a cat in a garden\",\n    \"num_images\": 4,\n    \"model_uid\": \"your-model-uuid\",\n    \"size\": [1024, 1024],\n    \"reference_images\": [\n        {\n            \"url\": \"https://example.com/sketch.jpg\",\n            \"purpose\": \"sketch\",\n            \"strength\": 0.8\n        },\n        {\n            \"base64\": \"iVBORw0KGgo...\",\n            \"purpose\": \"style\"\n        }\n    ]\n}\n```\n\n**Reference Image Purposes:**\n- `sketch`: Use image structure as guide (influence depends on the `strength` parameter)\n- `style`: Transfer artistic style from the reference image\n- `reference`: Use as general visual reference/guidance\n- `instruct`: Modify the reference image based on your prompt\n- `product`: Position a product in the generated image\n- `character`: Position a character in the generated image\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model must be owned by you or publicly accessible\n- Model must be active\n- Prompt must be 1-10,000 characters\n- Reference images must be valid JPEG/PNG/GIF/BMP/WebP (max 50MB, min 64x64)\n- Maximum number of reference images depends on your model\n- Not all models support all reference types\n\n**Returns:**\n- 201: Images generated successfully with URLs and metadata\n- 400: Invalid request (inactive model, bad prompt, invalid reference images, etc.)\n- 401: Invalid or missing API token\n- 404: Model not found or not accessible\n- 500: Generation failed or timed out (includes error details and any partial results)"
+      tags:
+      - Images v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateImageIn'
+        required: true
+      security:
+      - APITokenAuth: []
+  /public/v1/images/{uid}/:
+    get:
+      operationId: durer_backend_public_api_api_routes_images_get_image
+      summary: Get an image
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedImageOut'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Retrieve a specific image by its unique identifier.
+
+
+        This endpoint fetches the details of an image.
+
+
+        **Usage:**
+
+        1. Get the image''s details and URL
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Image must exist and be owned by the user
+
+
+        **Returns:**
+
+        - 200: Image details including metadata and URL
+
+        - 401: Invalid or missing API token
+
+        - 404: If the image does not exist'
+      tags:
+      - Images v1
+      security:
+      - APITokenAuth: []
+  /public/v1/images/{uid}/upscales/:
+    post:
+      operationId: durer_backend_public_api_api_routes_images_upscale_image
+      summary: Upscale an image
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Initiate an asynchronous image upscaling task.
+
+
+        This endpoint starts a background task to upscale an image to a higher resolution.
+
+        Supported scales are "2k", "4k", "6k", and "8k".
+
+        The task runs asynchronously and the result can be retrieved later.
+
+
+        **Usage:**
+
+        1. Send a POST request with the image''s unique identifier and upscale parameters
+
+        2. Receive a message indicating the upscale task has been launched
+
+        3. Check the status of the task using the `.../{uid}/upscales/{scale}/` endpoint
+
+        4. Retrieve the upscaled image using the `.../{uid}/upscales/{scale}/` endpoint when it''s ready
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Image must exist and be owned by the user
+
+        - Scale must be one of the supported values
+
+
+        **Returns:**
+
+        - 202: Upscale task has been successfully launched
+
+        - 401: Invalid or missing API token
+
+        - 404: If the image does not exist'
+      tags:
+      - Images v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpscaleImageIn'
+        required: true
+      security:
+      - APITokenAuth: []
+  /public/v1/images/{uid}/upscales/{scale}/:
+    get:
+      operationId: durer_backend_public_api_api_routes_images_get_image_upscale
+      summary: Get image upscale
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      - in: path
+        name: scale
+        schema:
+          enum:
+          - 2k
+          - 4k
+          - 6k
+          - 8k
+          title: Scale
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpscaleImageOut'
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Retrieve the upscaled version of an image at a specific resolution.
+
+
+        This endpoint checks the status of an upscale task and returns the result if available.
+
+
+        **Usage:**
+
+        1. Send a GET request with the image''s unique identifier and target upscale resolution
+
+        2. Receive a message indicating the status of the upscale task if the upscaled image is not available
+
+        3. Receive the upscaled image''s details and URL if the upscaled image is available
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Image must exist and be owned by the user
+
+        - Scale must be one of the supported values
+
+
+        **Returns:**
+
+        - 200: Upscaled image details with URL and dimensions
+
+        - 202: If the upscale task is still processing
+
+        - 401: Invalid or missing API token
+
+        - 404: If the image or upscale does not exist
+
+        - 500: If the upscale task failed during processing'
+      tags:
+      - Images v1
+      security:
+      - APITokenAuth: []
+  /public/v1/images/{uid}/vectors/:
+    post:
+      operationId: durer_backend_public_api_api_routes_images_vectorize_image
+      summary: Vectorize an image
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Initiate an asynchronous image vectorization task.
+
+
+        This endpoint starts a background task to vectorize an image.
+
+        The task runs asynchronously and the result can be retrieved later.
+
+
+        **Usage:**
+
+        1. Send a POST request with the image''s unique identifier
+
+        2. Receive a message indicating the vectorize task has been launched
+
+        3. Check the status of the task using the `.../{uid}/vectorize/` endpoint
+
+        4. Retrieve the vectorized image using the `.../{uid}/vectorize/` endpoint when it''s ready
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Image must exist and be owned by the user
+
+
+        **Returns:**
+
+        - 202: Vectorization task has been successfully launched
+
+        - 404: If the image does not exist'
+      tags:
+      - Images v1
+      security:
+      - APITokenAuth: []
+    get:
+      operationId: durer_backend_public_api_api_routes_images_get_image_vector
+      summary: Get the last image vector
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VectorImageOut'
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Retrieve the vectorized version of an image.
+
+
+        This endpoint checks the status of a vectorization task and returns the result if available.
+
+
+        **Usage:**
+
+        1. Send a GET request with the image''s unique identifier
+
+        2. Receive a message indicating the status of the vectorization task if the vectorized image is not available
+
+        3. Receive the vectorized image''s details with base64-encoded SVG content if the vectorized image is available
+
+
+        **Requirements:**
+
+        - Valid API token in Authorization header
+
+        - Image must exist and be owned by the user
+
+
+        **Returns:**
+
+        - 200: Vectorized image details with base64-encoded SVG content
+
+        - 202: If the vectorization task is still processing
+
+        - 401: Invalid or missing API token
+
+        - 404: If the image or vector image does not exist
+
+        - 500: If the vectorization task failed during processing'
+      tags:
+      - Images v1
+      security:
+      - APITokenAuth: []
+  /public/v1/images/{uid}/remove-bg/:
+    post:
+      operationId: durer_backend_public_api_api_routes_images_remove_bg_image
+      summary: Remove background from an image
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Initiate an asynchronous background removal task for an image.
+
+
+        Mirrors the vectorization flow but uses background removal.
+
+
+        Returns:
+
+        - 202: Remove background task launched
+
+        - 404: Image not found'
+      tags:
+      - Images v1
+      security:
+      - APITokenAuth: []
+    get:
+      operationId: durer_backend_public_api_api_routes_images_get_removed_bg_image
+      summary: Get the last background-removed image
+      parameters:
+      - in: path
+        name: uid
+        schema:
+          format: uuid
+          title: Uid
+          type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveBgImageOut'
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DurerError'
+      description: 'Retrieve the image with background removed.
+
+
+        Mirrors the vectorization retrieval flow, returning base64-encoded PNG.'
+      tags:
+      - Images v1
+      security:
+      - APITokenAuth: []
+components:
+  schemas:
+    GenerationErrorOut:
+      description: Error details for generation failures.
+      properties:
+        error_code:
+          description: Error code identifying the type of error
+          title: Error Code
+          type: string
+        message:
+          description: Error message
+          title: Message
+          type: string
+      required:
+      - error_code
+      - message
+      title: GenerationErrorOut
+      type: object
+    GeneratedImageOut:
+      properties:
+        uid:
+          description: Unique identifier for the generated image
+          format: uuid
+          title: Uid
+          type: string
+        width:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Width of the generated image in pixels
+          title: Width
+        height:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Height of the generated image in pixels
+          title: Height
+        url:
+          description: Direct URL to access the generated image
+          format: uri
+          minLength: 1
+          title: Url
+          type: string
+      required:
+      - uid
+      - url
+      title: GeneratedImageOut
+      type: object
+    ReferenceImageIn:
+      description: A reference image to guide generation.
+      properties:
+        url:
+          anyOf:
+          - format: uri
+            minLength: 1
+            type: string
+          - type: 'null'
+          description: Public URL to reference image
+          title: Url
+        base64:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Base64-encoded image data (PNG/JPEG). For large images, prefer using url.
+          title: Base64
+        purpose:
+          default: reference
+          description: How this image should influence generation. 'sketch' uses edge detection, 'style' transfers artistic style, 'reference' uses as general guide, 'instruct' enables image editing based on prompt, 'product'/'character' position specific elements.
+          enum:
+          - sketch
+          - style
+          - reference
+          - instruct
+          - product
+          - character
+          title: Purpose
+          type: string
+        strength:
+          anyOf:
+          - maximum: 1.0
+            minimum: 0.01
+            type: number
+          - type: 'null'
+          description: Influence strength (0.01-1). Only applicable for 'sketch' purpose. Higher values = stronger influence.
+          title: Strength
+      title: ReferenceImageIn
+      type: object
+    RemoveBgImageOut:
+      properties:
+        uid:
+          description: Unique identifier for the background-removed image
+          format: uuid
+          title: Uid
+          type: string
+        base64:
+          description: Base64-encoded PNG image data with background removed
+          title: Base64
+          type: string
+      required:
+      - uid
+      - base64
+      title: RemoveBgImageOut
+      type: object
+    UpscaleImageOut:
+      properties:
+        uid:
+          description: Unique identifier for the upscaled image
+          format: uuid
+          title: Uid
+          type: string
+        width:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Width of the upscaled image in pixels
+          title: Width
+        height:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Height of the upscaled image in pixels
+          title: Height
+        url:
+          description: Direct URL to access the upscaled image
+          format: uri
+          minLength: 1
+          title: Url
+          type: string
+      required:
+      - uid
+      - url
+      title: UpscaleImageOut
+      type: object
+    GenerateImageIn:
+      properties:
+        prompt:
+          description: Text prompt of the image to generate
+          maxLength: 10000
+          minLength: 1
+          title: Prompt
+          type: string
+        num_images:
+          default: 1
+          description: Number of images to generate (1-100)
+          exclusiveMinimum: 0
+          maximum: 100
+          minimum: 1
+          title: Num Images
+          type: integer
+        model_uid:
+          description: UUID of the style model to use for generation
+          format: uuid
+          title: Model Uid
+          type: string
+        size:
+          anyOf:
+          - maxItems: 2
+            minItems: 2
+            prefixItems:
+            - type: integer
+            - type: integer
+            type: array
+          - type: 'null'
+          description: Image dimensions as [width, height] in pixels. Optional - some models don't support custom dimensions.
+          title: Size
+        reference_images:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ReferenceImageIn'
+            maxItems: 10
+            type: array
+          - type: 'null'
+          description: Optional reference images to guide generation. Maximum number depends on a model (typically 1-5). Not all models support all reference types. Images will be validated before generation.
+          title: Reference Images
+        quality:
+          anyOf:
+          - enum:
+            - low
+            - medium
+            - high
+            - auto
+            type: string
+          - type: 'null'
+          description: Optional quality level. Allowed values depend on the model (see `available_qualities` in the model detail response). Omit for default behavior.
+          title: Quality
+      required:
+      - prompt
+      - model_uid
+      title: GenerateImageIn
+      type: object
+    DurerMessage:
+      properties:
+        message:
+          description: Message
+          examples:
+          - success
+          title: Message
+          type: string
+      required:
+      - message
+      title: DurerMessage
+      type: object
+    GenerateImageOut:
+      description: Response for image generation requests.
+      properties:
+        images:
+          description: List of generated images with metadata and URLs
+          items:
+            $ref: '#/components/schemas/GeneratedImageOut'
+          title: Images
+          type: array
+        error:
+          anyOf:
+          - $ref: '#/components/schemas/GenerationErrorOut'
+          - type: 'null'
+          description: Error details if generation failed
+      title: GenerateImageOut
+      type: object
+    VectorImageOut:
+      properties:
+        uid:
+          description: Unique identifier for the vector image
+          format: uuid
+          title: Uid
+          type: string
+        base64:
+          description: Base64-encoded vector image data
+          title: Base64
+          type: string
+      required:
+      - uid
+      - base64
+      title: VectorImageOut
+      type: object
+    UpscaleImageIn:
+      properties:
+        scale:
+          description: Upscale resolution
+          enum:
+          - 2k
+          - 4k
+          - 6k
+          - 8k
+          title: Scale
+          type: string
+      required:
+      - scale
+      title: UpscaleImageIn
+      type: object
+    DurerError:
+      properties:
+        message:
+          description: Error message
+          examples:
+          - Something went wrong
+          title: Message
+          type: string
+        client_message:
+          description: Error message for the client
+          examples:
+          - Something went wrong
+          title: Client Message
+          type: string
+      required:
+      - message
+      title: DurerError
+      type: object
+  securitySchemes:
+    APITokenAuth:
+      type: http
+      scheme: bearer
