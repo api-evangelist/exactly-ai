@@ -1,0 +1,62 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/exactly-ai-public-openapi-original.json
+entities:
+- name: Model
+  id: uid (uuid)
+  description: A custom AI style model trained from brand images; also base models.
+  fields:
+  - uid
+  - name
+  - active
+  - status
+  - custom_data
+  - generation_params
+  - available_purposes
+  - available_qualities
+  status_enum:
+  - draft
+  - training
+  - ready
+  - deleted
+- name: TrainImage
+  id: image_uid (uuid)
+  description: A training image attached to a model.
+  belongs_to: Model
+- name: Image
+  id: uid (uuid)
+  description: A generated image produced from a style model.
+  fields:
+  - uid
+  - model_uid
+  - prompt
+- name: Upscale
+  description: An upscaled (2K-8K) rendition of a generated image.
+  belongs_to: Image
+- name: Vector
+  description: An SVG vectorization of a generated image.
+  belongs_to: Image
+- name: RemoveBg
+  description: A background-removed rendition of a generated image.
+  belongs_to: Image
+relationships:
+- from: Model
+  to: TrainImage
+  kind: has_many
+  via: model uid path
+- from: Image
+  to: Model
+  kind: belongs_to
+  via: model_uid
+- from: Image
+  to: Upscale
+  kind: has_many
+  via: image uid path
+- from: Image
+  to: Vector
+  kind: has_one
+  via: image uid path (last vector)
+- from: Image
+  to: RemoveBg
+  kind: has_one
+  via: image uid path (last removed-bg)

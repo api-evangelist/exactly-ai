@@ -1,0 +1,56 @@
+generated: '2026-07-19'
+method: searched
+source: https://api.exactly.ai/public/docs/ + openapi/exactly-ai-public-openapi-original.json
+authentication:
+  style: http bearer token
+  scheme: APITokenAuth
+  header: 'Authorization: Bearer <token>'
+  availability: enterprise clients
+  ref: authentication/exactly-ai-authentication.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  example: /public/v1/models/
+pagination:
+  style: limit-offset
+  params:
+  - name: limit
+    default: 100
+    min: 1
+    max: 5000
+  - name: offset
+    default: 0
+    min: 0
+  response_fields:
+  - items
+  - count
+  - total_count
+  schema: PaginatedResponse
+async_jobs:
+  pattern: submit-then-poll
+  description: Long-running operations (model training, image upscale, vectorize, remove-bg) return 202
+    Accepted and are polled via a corresponding GET endpoint until the result is ready (200). Training
+    exposes a dedicated progress endpoint.
+  poll_endpoints:
+  - GET /public/v1/models/{uid}/train/progress/
+  - GET /public/v1/images/{uid}/upscales/{scale}/
+  - GET /public/v1/images/{uid}/vectors/
+  - GET /public/v1/images/{uid}/remove-bg/
+identifiers:
+  type: uuid
+  fields:
+  - uid
+  - model_uid
+  - image_uid
+idempotency:
+  supported: false
+  note: No idempotency-key header or parameter is documented in the Public API.
+error_envelope:
+  shape: DurerError {message, client_message}
+  ref: errors/exactly-ai-problem-types.yml
+rate_limit_signaling:
+  documented: false
+cross_links:
+  errors: errors/exactly-ai-problem-types.yml
+  lifecycle: lifecycle/exactly-ai-lifecycle.yml
+  authentication: authentication/exactly-ai-authentication.yml

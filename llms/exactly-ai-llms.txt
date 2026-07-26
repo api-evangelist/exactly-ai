@@ -1,0 +1,65 @@
+# exactly.ai
+
+> exactly.ai is a private AI image platform for brands and creative teams that need bespoke, on-brand visual generation, editing, and style transfer at scale.
+
+exactly.ai helps brands and creative teams turn existing brand visuals into reusable private styles, generate new assets that stay within brand rules, and scale production across marketing, product, and creative workflows. The platform supports both custom-trained style models and base models for broader image generation, alongside editing, upscaling, vectorization, animation, and API-based integration.
+
+**Important notes:**
+- Private styles are trained on a customer's own assets and are private by default — no one else can access or use them.
+- Training data is not shared with third parties and is not reused to train global or public models.
+- All uploaded images, trained models, and generated outputs belong to the creator.
+- Rights are model-dependent: private-style and artist-style outputs require a license for commercial use and export; base-model rights depend on the underlying provider.
+- SOC 2 Type II compliant.
+
+## Start here
+- [Homepage](https://exactly.ai): Main product overview and current positioning.
+- [Pricing](https://exactly.ai/pricing): Buying paths for self-serve, volume, and enterprise customers.
+- [Case studies](https://exactly.ai/case-studies): Customer stories and outcomes across industries.
+- [Help center](https://exactly.ai/help-center/collections/getting-started): Main documentation entry point for product, billing, security, and API topics.
+
+## Core capabilities
+- **Style transfer**: train a custom AI model from as few as 10 reference images to replicate any visual style and generate on-brand images at scale.
+- **Base model (e.gent)**: photorealistic image generation from text prompts — no style training required.
+- **Character and product pinning**: lock signature characters or products consistently across hundreds of styled assets.
+- **Editing tools**: inpainting, outpainting, background removal, image-to-image variations.
+- **Animation**: generate motion from still images with keyframes and timeline controls.
+- **SVG vectorization** of generated assets.
+- **Up to 8K image upscaling**.
+- **Multilingual prompt support**.
+- **Enterprise API**: integrate style transfer and generation into your own products.
+
+## Product and platform
+- [AI style transfer](https://exactly.ai/ai-style-transfer): Train a private style from brand assets and generate matching visuals.
+- [Style library](https://exactly.ai/models): Public artist-created styles and marketplace examples.
+- [Library overview](https://exactly.ai/help-center/library-overview): Explains base models, artist styles, private styles, licensing, and privacy distinctions.
+- [API access](https://exactly.ai/help-center/api): Enterprise API for model creation, training, generation, remixing, upscaling, vectorization, and usage monitoring.
+- [API docs](https://api.exactly.ai/public/docs/): Reference documentation for programmatic integration.
+- [Data protection & privacy](https://exactly.ai/help-center/data-protection-privacy-ico-registered-private-by-default): Private-by-default data handling, dataset protection, and sharing controls.
+
+## Pricing
+- **Free tier**: 10 credits/day, first style model training free, watermarked downloads.
+- **One-time credits**: £10 per 100 credits — unlocks all features including model training and generation.
+- **Pay-per-download**: £75 per licensed download (watermark-free, perpetual commercial license).
+- **Volume plans**: subscriptions from £56.25/download with up to 55% discount.
+- **Enterprise**: custom pricing, unlimited seats, SSO, dedicated ML team support, custom-built solutions.
+
+## Enterprise use cases
+- [Corporate graphics](https://exactly.ai/solutions/corporate_graphics): On-brand visuals for reports, decks, and presentations.
+- [Social media marketing](https://exactly.ai/solutions/social_media_marketing): Scalable campaign visuals trained on existing brand assets.
+
+## Customer case studies
+- [Aspora](https://exactly.ai/case-studies/local-soul-on-a-global-scale-how-aspora-accelerated-a-rebrand-%28and-a-93m-moment%29-with-exactly-ai): Rebrand acceleration and faster on-brand asset production.
+- [Graphite.dev](https://exactly.ai/case-studies/consistency-at-startup-speed-how-graphite-dev-built-a-cohesive-visual-brand-with-exactly-ai): Private, brand-owned visual system for a fast-growing software company.
+- [inDrive](https://exactly.ai/case-studies/how-indrive-scales-global-brand-assets-at-the-speed-of-mobility-with-exactly-ai): Global asset scaling with regional autonomy and central brand consistency.
+- [Bordeaux & Burgundy](https://exactly.ai/case-studies/how-bordeaux-burgundy-crafts-standout-b2b-marketing-creative-with-exactly-ai): B2B agency case with quantified speed, approval, and cost improvements.
+- [Sennep](https://exactly.ai/case-studies/how-sennep-used-exactly-ai-to-accelerate-3d-game-development): Faster ideation and asset creation for interactive and 3D work.
+- [Bearly Funny](https://exactly.ai/case-studies/how-bearly-funny-scales-purpose-led-brand-visuals-with-exactly-ai): Scaled client-specific brand visuals while preserving creative direction.
+
+## Policies
+- [Platform licence agreement](https://exactly.ai/terms): Core contractual terms and platform definitions.
+- [Privacy policy](https://exactly.ai/privacy-policy): Personal data handling and privacy terms.
+- [Copyright policy](https://exactly.ai/copyright-policy): Copyright complaints and copyright policy.
+- [Content rules](https://exactly.ai/content-rules): Content restrictions and platform rules.
+
+## Optional
+- [Community blog](https://exactly.ai/community/blog): Product updates, guides, and broader community content.

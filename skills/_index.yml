@@ -1,0 +1,24 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/exactly-ai-public-openapi-original.json
+skills:
+- file: exactly-ai-train-style-model.md
+  name: Train a custom exactly.ai style model
+  api: openapi/exactly-ai-public-openapi-original.json
+  operations:
+  - durer_backend_public_api_api_routes_models_create_model
+  - durer_backend_public_api_api_routes_models_add_train_image
+  - durer_backend_public_api_api_routes_models_run_model_training
+  - durer_backend_public_api_api_routes_models_get_model_training_progress
+  - durer_backend_public_api_api_routes_models_get_model
+- file: exactly-ai-generate-images.md
+  name: Generate on-brand images from a style model
+  api: openapi/exactly-ai-public-openapi-original.json
+  operations:
+  - durer_backend_public_api_api_routes_models_enhance_prompt_for_model
+  - durer_backend_public_api_api_routes_images_generate_images
+  - durer_backend_public_api_api_routes_images_get_image
+  - durer_backend_public_api_api_routes_images_upscale_image
+  - durer_backend_public_api_api_routes_images_get_image_upscale
+  - durer_backend_public_api_api_routes_images_vectorize_image
+  - durer_backend_public_api_api_routes_images_remove_bg_image

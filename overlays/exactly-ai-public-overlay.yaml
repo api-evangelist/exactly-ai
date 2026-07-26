@@ -1,0 +1,21 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Exactly Public API
+  version: 1.0.0
+extends: openapi/exactly-ai-public-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: true
+    x-api-evangelist: https://apis.io/exactly-ai
+    description: "Exactly Public API \u2014 enterprise programmatic access to exactly.ai custom style-model\
+      \ training, image generation, upscaling, vectorization, and background removal. Bearer-token authenticated."
+- target: $.servers
+  update:
+  - url: https://api.exactly.ai
+    description: Production
+- target: $.info
+  update:
+    x-conventions: conventions/exactly-ai-conventions.yml
+    x-errors: errors/exactly-ai-problem-types.yml
+    x-data-model: data-model/exactly-ai-data-model.yml

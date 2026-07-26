@@ -1,0 +1,60 @@
+arazzo: 1.0.1
+info:
+  title: "Exactly.ai \u2014 train a style model and generate images"
+  version: 1.0.0
+  summary: Create a custom style model, train it on brand images, then generate on-brand images once ready.
+sourceDescriptions:
+- name: exactlyPublic
+  url: ../openapi/exactly-ai-public-openapi-original.json
+  type: openapi
+workflows:
+- workflowId: train-and-generate
+  summary: 'End-to-end: create model, add training images, train, poll to ready, generate.'
+  inputs:
+    type: object
+    properties:
+      model_name:
+        type: string
+      train_image_url:
+        type: string
+      prompt:
+        type: string
+  steps:
+  - stepId: create-model
+    operationId: durer_backend_public_api_api_routes_models_create_model
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.model_name
+    outputs:
+      model_uid: $response.body#/uid
+  - stepId: add-train-image
+    operationId: durer_backend_public_api_api_routes_models_add_train_image
+    parameters:
+    - name: uid
+      in: path
+      value: $steps.create-model.outputs.model_uid
+  - stepId: train
+    operationId: durer_backend_public_api_api_routes_models_run_model_training
+    parameters:
+    - name: uid
+      in: path
+      value: $steps.create-model.outputs.model_uid
+  - stepId: poll-progress
+    operationId: durer_backend_public_api_api_routes_models_get_model_training_progress
+    parameters:
+    - name: uid
+      in: path
+      value: $steps.create-model.outputs.model_uid
+  - stepId: generate
+    operationId: durer_backend_public_api_api_routes_images_generate_images
+    requestBody:
+      contentType: application/json
+      payload:
+        prompt: $inputs.prompt
+        model_uid: $steps.create-model.outputs.model_uid
+    outputs:
+      image_uid: $response.body#/uid
+  outputs:
+    model_uid: $steps.create-model.outputs.model_uid
+    image_uid: $steps.generate.outputs.image_uid

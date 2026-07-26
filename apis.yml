@@ -1,7 +1,15 @@
 aid: exactly-ai
 name: Exactly Ai
-description: Exactly Ai is a company surfaced as a portfolio company of speedinvest and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Exactly.ai is a private, brand-safe AI image generation platform for brands, agencies, and creative
+  teams. It trains custom AI "style" models from as few as ten brand images, then generates hundreds of
+  on-brand image variations with consistent look and feel. Beyond generation the platform edits and
+  animates images, pins characters, upscales to 8K, vectorizes to SVG, and removes backgrounds, with
+  outputs fully licensed for commercial use and original artists compensated when their styles are used.
+  Exactly.ai exposes an enterprise Public API (bearer-token authenticated) for programmatic model
+  creation and training, image generation, upscaling, vectorization, and background removal, alongside
+  the e.studio web product. The company is a portfolio company of Speedinvest and is tracked in the API
+  Evangelist network.
 url: https://raw.githubusercontent.com/api-evangelist/exactly-ai/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -9,14 +17,126 @@ x-backed-by:
 - speedinvest
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://framerusercontent.com/images/WlAkvz0GvPEt7p9O61w5Zp9WtY.png
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-apis: []
+- Artificial Intelligence
+- Image Generation
+- Generative AI
+- Creative Tools
+- Brand
+- Machine Learning
+- Media
+apis:
+- aid: exactly-ai:exactly-ai-images-v1-api
+  name: Exactly Ai Images v1 API
+  description: The Images v1 API from Exactly Ai — 6 operation(s) for images v1.
+  humanURL: https://api.exactly.ai/public/docs/
+  baseURL: https://api.exactly.ai
+  tags:
+  - Images v1
+  properties:
+  - type: OpenAPI
+    url: openapi/exactly-ai-images-v1-api-openapi.yml
+  - type: Documentation
+    url: https://api.exactly.ai/public/docs/
+  - type: APIReference
+    url: https://api.exactly.ai/public/docs/
+- aid: exactly-ai:exactly-ai-models-v1-api
+  name: Exactly Ai Models v1 API
+  description: The Models v1 API from Exactly Ai — 9 operation(s) for models v1.
+  humanURL: https://api.exactly.ai/public/docs/
+  baseURL: https://api.exactly.ai
+  tags:
+  - Models v1
+  properties:
+  - type: OpenAPI
+    url: openapi/exactly-ai-models-v1-api-openapi.yml
+  - type: Documentation
+    url: https://api.exactly.ai/public/docs/
+  - type: APIReference
+    url: https://api.exactly.ai/public/docs/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: AgenticAccess
+  url: agentic-access/exactly-ai-agentic-access.yml
+- type: DomainSecurity
+  url: security/exactly-ai-domain-security.yml
+- type: DeveloperPortal
+  url: https://api.exactly.ai/public/docs/
+- type: Documentation
+  url: https://api.exactly.ai/public/docs/
+- type: APIReference
+  url: https://api.exactly.ai/public/docs/
+- type: Pricing
+  url: https://exactly.ai/pricing
+- type: Support
+  url: https://exactly.ai/help-center
+- type: SignUp
+  url: https://exactly.ai/book-a-demo
+- type: TermsOfService
+  url: https://exactly.ai/terms
+- type: PrivacyPolicy
+  url: https://exactly.ai/privacy-policy
+- type: GettingStarted
+  url: https://exactly.ai/help-center/collections/getting-started
+- type: GitHubOrganization
+  url: https://github.com/exactly-ai
+- type: Compliance
+  url: https://exactly.ai/help-center/data-protection-privacy-ico-registered-private-by-default
+- type: Authentication
+  url: authentication/exactly-ai-authentication.yml
+- type: OpenAPI
+  url: openapi/exactly-ai-public-openapi-original.json
+- type: LLMsTxt
+  url: llms/exactly-ai-llms.txt
+- type: ErrorCatalog
+  url: errors/exactly-ai-problem-types.yml
+- type: Conventions
+  url: conventions/exactly-ai-conventions.yml
+- type: DataModel
+  url: data-model/exactly-ai-data-model.yml
+- type: Lifecycle
+  url: lifecycle/exactly-ai-lifecycle.yml
+- type: Conformance
+  url: conformance/exactly-ai-conformance.yml
+- type: MCPServer
+  url: mcp/exactly-ai-mcp.yml
+- type: Overlay
+  url: overlays/exactly-ai-public-overlay.yaml
+- type: AgentSkill
+  name: Train a custom exactly.ai style model
+  url: skills/exactly-ai-train-style-model.md
+- type: AgentSkill
+  name: Generate on-brand images from a style model
+  url: skills/exactly-ai-generate-images.md
+- type: Arazzo
+  name: Train a style model and generate images
+  url: arazzo/exactly-ai-train-and-generate.yml
+- type: Arazzo
+  name: Generate and post-process an image
+  url: arazzo/exactly-ai-generate-and-postprocess.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

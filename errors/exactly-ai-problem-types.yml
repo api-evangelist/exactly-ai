@@ -1,0 +1,96 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/exactly-ai-public-openapi-original.json
+format: custom
+note: Errors are returned as an application/json DurerError envelope ({message, client_message}), not
+  RFC 9457 problem+json. Generation failures additionally surface a GenerationErrorOut ({error_code, message})
+  embedded in the 200 generation response.
+envelopes:
+- name: DurerError
+  media_type: application/json
+  fields:
+  - name: message
+    required: true
+    description: Internal error message
+  - name: client_message
+    required: false
+    description: Error message intended for display to the client
+- name: GenerationErrorOut
+  media_type: application/json
+  context: per-image generation failure inside GenerateImageOut
+  fields:
+  - name: error_code
+    required: true
+    description: Machine-readable code identifying the generation failure
+  - name: message
+    required: true
+    description: Human-readable error message
+problems:
+- status: 400
+  title: Bad Request
+  envelope: DurerError
+  fields:
+  - message
+  - client_message
+  remediation: Validate the request body/params against the OpenAPI schema before retrying.
+  operations:
+  - POST /public/v1/images/
+  - POST /public/v1/models/{uid}/train/
+  - POST /public/v1/models/{uid}/train_images/
+- status: 401
+  title: Unauthorized
+  envelope: DurerError
+  fields:
+  - message
+  - client_message
+  remediation: Provide a valid HTTP bearer API token in the Authorization header (enterprise API access).
+  operations:
+  - DELETE /public/v1/models/{uid}/
+  - DELETE /public/v1/models/{uid}/train_images/{image_uid}/
+  - GET /public/v1/images/{uid}/
+  - GET /public/v1/images/{uid}/remove-bg/
+  - GET /public/v1/images/{uid}/upscales/{scale}/
+  - GET /public/v1/images/{uid}/vectors/
+  - GET /public/v1/models/
+  - GET /public/v1/models/{uid}/
+- status: 403
+  title: Forbidden
+  envelope: DurerError
+  fields:
+  - message
+  - client_message
+  remediation: The action is not permitted for the model/resource in its current state (e.g. cannot train/cancel).
+  operations:
+  - POST /public/v1/models/{uid}/cancel/
+  - POST /public/v1/models/{uid}/train/
+  - POST /public/v1/models/{uid}/train_images/
+- status: 404
+  title: Not Found
+  envelope: DurerError
+  fields:
+  - message
+  - client_message
+  remediation: Confirm the model or image uid exists and belongs to your account.
+  operations:
+  - DELETE /public/v1/models/{uid}/
+  - DELETE /public/v1/models/{uid}/train_images/{image_uid}/
+  - GET /public/v1/images/{uid}/
+  - GET /public/v1/images/{uid}/remove-bg/
+  - GET /public/v1/images/{uid}/upscales/{scale}/
+  - GET /public/v1/images/{uid}/vectors/
+  - GET /public/v1/models/{uid}/
+  - GET /public/v1/models/{uid}/train/progress/
+- status: 500
+  title: Internal Server Error
+  envelope: DurerError
+  fields:
+  - message
+  - client_message
+  remediation: A server-side or generation error occurred; retry with backoff, and inspect error_code
+    on generation responses.
+  operations:
+  - GET /public/v1/images/{uid}/remove-bg/
+  - GET /public/v1/images/{uid}/upscales/{scale}/
+  - GET /public/v1/images/{uid}/vectors/
+  - POST /public/v1/images/
+  - POST /public/v1/models/{uid}/enhance_prompt/

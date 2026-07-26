@@ -1,0 +1,16 @@
+{
+  "provider": "exactly-ai",
+  "sources": [
+    "exactly-ai-images-v1-api-openapi.yml",
+    "exactly-ai-models-v1-api-openapi.yml"
+  ],
+  "outputs": [
+    "exactly-ai-images-v1-api-openapi.yml",
+    "exactly-ai-models-v1-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

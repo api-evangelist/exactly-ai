@@ -1,0 +1,288 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/exactly-ai-public-openapi-original.json
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 20
+  by_action_class:
+    acting: 12
+    connected: 8
+  by_consequence:
+    write: 12
+    read: 8
+  human_in_the_loop_required: 0
+operations:
+- path: /public/v1/models/
+  method: post
+  operationId: durer_backend_public_api_api_routes_models_create_model
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/models/
+  method: get
+  operationId: durer_backend_public_api_api_routes_models_list_models
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /public/v1/models/{uid}/
+  method: get
+  operationId: durer_backend_public_api_api_routes_models_get_model
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /public/v1/models/{uid}/
+  method: delete
+  operationId: durer_backend_public_api_api_routes_models_delete_model
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/models/{uid}/draft/
+  method: post
+  operationId: durer_backend_public_api_api_routes_models_make_model_draft
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/models/{uid}/train_images/
+  method: post
+  operationId: durer_backend_public_api_api_routes_models_add_train_image
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/models/{uid}/train_images/
+  method: get
+  operationId: durer_backend_public_api_api_routes_models_list_train_images
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /public/v1/models/{uid}/train_images/{image_uid}/
+  method: delete
+  operationId: durer_backend_public_api_api_routes_models_delete_item
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/models/{uid}/train/
+  method: post
+  operationId: durer_backend_public_api_api_routes_models_run_model_training
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/models/{uid}/cancel/
+  method: post
+  operationId: durer_backend_public_api_api_routes_models_cancel_model_training
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/models/{uid}/train/progress/
+  method: get
+  operationId: durer_backend_public_api_api_routes_models_get_model_training_progress
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /public/v1/models/{uid}/enhance_prompt/
+  method: post
+  operationId: durer_backend_public_api_api_routes_models_enhance_prompt_for_model
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/images/
+  method: post
+  operationId: durer_backend_public_api_api_routes_images_generate_images
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/images/{uid}/
+  method: get
+  operationId: durer_backend_public_api_api_routes_images_get_image
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /public/v1/images/{uid}/upscales/
+  method: post
+  operationId: durer_backend_public_api_api_routes_images_upscale_image
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/images/{uid}/upscales/{scale}/
+  method: get
+  operationId: durer_backend_public_api_api_routes_images_get_image_upscale
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /public/v1/images/{uid}/vectors/
+  method: post
+  operationId: durer_backend_public_api_api_routes_images_vectorize_image
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/images/{uid}/vectors/
+  method: get
+  operationId: durer_backend_public_api_api_routes_images_get_image_vector
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /public/v1/images/{uid}/remove-bg/
+  method: post
+  operationId: durer_backend_public_api_api_routes_images_remove_bg_image
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /public/v1/images/{uid}/remove-bg/
+  method: get
+  operationId: durer_backend_public_api_api_routes_images_get_removed_bg_image
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none

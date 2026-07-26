@@ -1,0 +1,23 @@
+generated: '2026-07-19'
+method: searched
+source: https://exactly.ai/llms.txt + openapi/exactly-ai-public-openapi-original.json
+standards:
+- id: http-bearer-auth
+  conforms: true
+  evidence: openapi securityScheme APITokenAuth type http scheme bearer
+- id: oauth2
+  conforms: false
+- id: openid-connect
+  conforms: false
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors use a custom DurerError application/json envelope, not application/problem+json
+- id: pagination-limit-offset
+  conforms: true
+  evidence: LimitOffsetQueryParams (limit/offset) + PaginatedResponse across list endpoints
+- id: idempotency
+  conforms: false
+- id: soc2-type-ii
+  conforms: true
+  evidence: '"SOC 2 Type II compliant" published on https://exactly.ai/llms.txt and help-center security
+    topics'

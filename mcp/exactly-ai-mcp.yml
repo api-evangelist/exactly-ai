@@ -1,0 +1,110 @@
+generated: '2026-07-19'
+method: derived
+status: candidate
+source: openapi/exactly-ai-public-openapi-original.json
+note: No official hosted/remote MCP server was found for exactly.ai. This is a candidate tool list derived
+  one-to-one from the Public API operations.
+server:
+  name: exactly-ai
+  transport: http
+tools:
+- name: durer_backend_public_api_api_routes_models_create_model
+  description: Create a new model
+  method: POST
+  path: /public/v1/models/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_create_model
+- name: durer_backend_public_api_api_routes_models_list_models
+  description: List user's models
+  method: GET
+  path: /public/v1/models/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_list_models
+- name: durer_backend_public_api_api_routes_models_get_model
+  description: Get a model by its unique identifier
+  method: GET
+  path: /public/v1/models/{uid}/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_get_model
+- name: durer_backend_public_api_api_routes_models_delete_model
+  description: Delete a model by its unique identifier
+  method: DELETE
+  path: /public/v1/models/{uid}/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_delete_model
+- name: durer_backend_public_api_api_routes_models_make_model_draft
+  description: Put a model into draft state
+  method: POST
+  path: /public/v1/models/{uid}/draft/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_make_model_draft
+- name: durer_backend_public_api_api_routes_models_add_train_image
+  description: Add a training image to a model
+  method: POST
+  path: /public/v1/models/{uid}/train_images/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_add_train_image
+- name: durer_backend_public_api_api_routes_models_list_train_images
+  description: List training images for a model
+  method: GET
+  path: /public/v1/models/{uid}/train_images/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_list_train_images
+- name: durer_backend_public_api_api_routes_models_delete_item
+  description: Delete a training image from a model
+  method: DELETE
+  path: /public/v1/models/{uid}/train_images/{image_uid}/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_delete_item
+- name: durer_backend_public_api_api_routes_models_run_model_training
+  description: Train a model
+  method: POST
+  path: /public/v1/models/{uid}/train/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_run_model_training
+- name: durer_backend_public_api_api_routes_models_cancel_model_training
+  description: Cancel Model Training
+  method: POST
+  path: /public/v1/models/{uid}/cancel/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_cancel_model_training
+- name: durer_backend_public_api_api_routes_models_get_model_training_progress
+  description: Get Model Training Progress
+  method: GET
+  path: /public/v1/models/{uid}/train/progress/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_get_model_training_progress
+- name: durer_backend_public_api_api_routes_models_enhance_prompt_for_model
+  description: Enhance a prompt for given model
+  method: POST
+  path: /public/v1/models/{uid}/enhance_prompt/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_models_enhance_prompt_for_model
+- name: durer_backend_public_api_api_routes_images_generate_images
+  description: Generate images using style model
+  method: POST
+  path: /public/v1/images/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_generate_images
+- name: durer_backend_public_api_api_routes_images_get_image
+  description: Get an image
+  method: GET
+  path: /public/v1/images/{uid}/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_get_image
+- name: durer_backend_public_api_api_routes_images_upscale_image
+  description: Upscale an image
+  method: POST
+  path: /public/v1/images/{uid}/upscales/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_upscale_image
+- name: durer_backend_public_api_api_routes_images_get_image_upscale
+  description: Get image upscale
+  method: GET
+  path: /public/v1/images/{uid}/upscales/{scale}/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_get_image_upscale
+- name: durer_backend_public_api_api_routes_images_vectorize_image
+  description: Vectorize an image
+  method: POST
+  path: /public/v1/images/{uid}/vectors/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_vectorize_image
+- name: durer_backend_public_api_api_routes_images_get_image_vector
+  description: Get the last image vector
+  method: GET
+  path: /public/v1/images/{uid}/vectors/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_get_image_vector
+- name: durer_backend_public_api_api_routes_images_remove_bg_image
+  description: Remove background from an image
+  method: POST
+  path: /public/v1/images/{uid}/remove-bg/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_remove_bg_image
+- name: durer_backend_public_api_api_routes_images_get_removed_bg_image
+  description: Get the last background-removed image
+  method: GET
+  path: /public/v1/images/{uid}/remove-bg/
+  source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_get_removed_bg_image

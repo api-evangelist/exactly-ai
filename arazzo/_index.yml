@@ -1,0 +1,11 @@
+generated: '2026-07-19'
+method: derived
+workflows:
+- file: exactly-ai-train-and-generate.yml
+  workflowId: train-and-generate
+  title: Train a style model and generate images
+  summary: Create model, add training images, train, poll to ready, generate.
+- file: exactly-ai-generate-and-postprocess.yml
+  workflowId: generate-and-postprocess
+  title: Generate and post-process an image
+  summary: Generate from a ready model, then upscale, vectorize, and remove background.
