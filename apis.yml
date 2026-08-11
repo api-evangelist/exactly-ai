@@ -106,7 +106,7 @@ common:
 - type: Authentication
   url: authentication/exactly-ai-authentication.yml
 - type: OpenAPI
-  url: openapi/exactly-ai-public-openapi-original.json
+  url: openapi/_original/exactly-ai-public-openapi-original.json
 - type: LLMsTxt
   url: llms/exactly-ai-llms.txt
 - type: ErrorCatalog
