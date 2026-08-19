@@ -1,0 +1,329 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Exactly Public Images v1 Models v1 API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Models v1",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List user's models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/v1/models/",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the number of results returned"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by this number"
+              },
+              {
+                "name": "active",
+                "value": "",
+                "type": "query",
+                "description": "Filter by active status (trained models)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all models owned by the authenticated user.\n\nThis endpoint returns a paginated list of models owned by the requesting user.\n\n**Usage:**\n1. Request a list of models with optional filtering by active status\n2. Use pagination parameters to control the number of results\n\n**Query Parameters:**\n- `active`: Optional boolean to filter by active (trained) models\n- `limit`: Number of results per page (default: 100, max: 5000)\n- `offset`: Number of results to skip (default: 0)\n\n**Requirements:**\n- Val"
+        },
+        {
+          "info": {
+            "name": "Create a new model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/models/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new model for custom style.\n\nThe model starts in draft state and can be trained with training images.\n\n**Usage:**\n1. Create a model with a descriptive name\n2. Optionally provide custom JSON data (max 64KB) for your application's use\n3. Add training images using the `POST .../{uid}/train_images/` endpoint\n4. Train the model using the `POST .../{uid}/train/` endpoint\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model name must be 1-255 characters\n- Custom data (if provid"
+        },
+        {
+          "info": {
+            "name": "Get a model by its unique identifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/v1/models/:uid/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a model by its unique identifier.\n\nThis endpoint returns the model's details, including its name, creation date, and status.\n\n**Usage:**\n1. Retrieve a model by its unique identifier\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model must be owned by, shared with, or publicly accessible to the requesting user\n\n**Returns:**\n- 200: Model details\n- 401: Invalid or missing API token\n- 404: Model not found or not accessible"
+        },
+        {
+          "info": {
+            "name": "Delete a model by its unique identifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/public/v1/models/:uid/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a model by its unique identifier.\n\nThis endpoint marks the model as deleted.\n\n**Usage:**\n1. Delete a model by its unique identifier\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model must exist and be owned by the requesting user\n\n**Returns:**\n- 200: Model deleted successfully\n- 401: Invalid or missing API token\n- 404: Model not found"
+        },
+        {
+          "info": {
+            "name": "Put a model into draft state",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/models/:uid/draft/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Put a model into draft state.\n\nThis endpoint puts a model into draft state, allowing it to be retrained.\n\nNote: The model can still be used for generating images until it starts training.\n\n**Usage:**\n1. Put a model into draft state\n2. Add new training images to the model with the `POST .../{uid}/train_images/` endpoint\n3. Delete unnecessary training images with the `DELETE.../{uid}/train_images/{image_uid}/` endpoint\n4. Train the model using the `POST .../{uid}/train/` endpoint\n\n**Requirements:*"
+        },
+        {
+          "info": {
+            "name": "List training images for a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/v1/models/:uid/train_images/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the number of results returned"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by this number"
+              },
+              {
+                "name": "include_filtered",
+                "value": "",
+                "type": "query",
+                "description": "Include filtered images in the response"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all training images for a model.\n\nThis endpoint returns a paginated list of training images for the specified model.\n\n**Usage:**\n1. Request a list of training images for a model\n2. Use pagination parameters to control the number of results\n3. Optionally include filtered images that triggered hard filters\n\n**Query Parameters:**\n- `limit`: Number of results per page (default: 100, max: 5000)\n- `offset`: Number of results to skip (default: 0)\n- `include_filtered`: Include filtered images in re"
+        },
+        {
+          "info": {
+            "name": "Add a training image to a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/models/:uid/train_images/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "image",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Add a training image to a model.\n\nThis endpoint adds a new training image to the model's draft.\nThe image will be processed and added to the model's training dataset.\n\n**Usage:**\n1. Add a training image to a model\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model must exist and be owned by the requesting user\n- Image must be a valid image file (max 50MB)\n\n**Returns:**\n- 201: Training image added successfully\n- 400: Invalid image file\n- 401: Invalid or missing API token\n- 403: "
+        },
+        {
+          "info": {
+            "name": "Delete a training image from a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/public/v1/models/:uid/train_images/:image_uid/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "image_uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a training image from a model.\n\nThis endpoint removes a training image from the model's draft.\n\n**Usage:**\n1. Delete a training image from a model\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model must exist and be owned by the requesting user\n- Image must exist and be part of the model's training dataset\n\n**Returns:**\n- 200: Training image deleted successfully\n- 401: Invalid or missing API token\n- 404: Model or image not found"
+        },
+        {
+          "info": {
+            "name": "Train a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/models/:uid/train/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Train a model using its training dataset.\n\nThis endpoint starts the training process for the model.\nThe model will be trained using its training dataset.\n\n**Usage:**\n1. Train a model\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model must exist and be owned by the requesting user\n- Model must have a training dataset\n\n**Returns:**\n- 200: Model training started successfully\n- 400: Invalid model state\n- 401: Invalid or missing API token\n- 403: Model is not in the draft state\n- 404"
+        },
+        {
+          "info": {
+            "name": "Cancel Model Training",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/models/:uid/cancel/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel a model training.\n\nThis endpoint cancels the training process for the model.\n\n**Usage:**\n1. Run a model training\n2. Cancel a model training\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model must exist and be owned by the requesting user\n- Model must be in the training state\n\n**Returns:**\n- 200: Model training canceled successfully\n- 401: Invalid or missing API token\n- 403: Model is not in the training state\n- 404: Model not found"
+        },
+        {
+          "info": {
+            "name": "Get Model Training Progress",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/v1/models/:uid/train/progress/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the training progress for a model.\n\nThis endpoint returns the current training progress for the specified model.\nThe progress is returned as a percentage value from 0 to 100.\n\n**Behavior:**\n- If the model is active (training completed), returns 100% progress\n- If the model is still training, returns current progress (0-99%)\n- If no training status is found, returns 0% progress\n\n**Usage:**\n1. Check training progress during model training\n2. Monitor training completion status\n\n**Requirements:*"
+        },
+        {
+          "info": {
+            "name": "Enhance a prompt for given model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/models/:uid/enhance_prompt/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Enhance a prompt for a given model.\n\n**Usage:**\n1. Enhance a prompt for a specific model\n\n**Requirements:**\n- Valid API token in Authorization header\n- Model must be owned by, shared with, or publicly accessible to the requesting user\n\n**Returns:**\n- 201: Enhanced prompt\n- 401: Invalid or missing API token\n- 404: Model not found or not accessible\n- 500: Internal server error"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

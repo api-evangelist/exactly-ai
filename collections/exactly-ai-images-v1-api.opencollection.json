@@ -1,0 +1,200 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Exactly Public Images v1 API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Images v1",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate images using style model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/images/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate images using a trained style model.\n\nThis endpoint creates images from text prompts using your custom-trained style model.\nYou can optionally provide reference images to guide the generation process.\n\n**Note:** For style models trained via API, the requested size will be rounded to the nearest\navailable size (e.g., 1000x1000 → 1024x1024). For other models, you must provide an exact\nsize from the model's supported dimensions.\n\n**Basic Usage:**\n```json\n{\n    \"prompt\": \"a cat in a garden\","
+        },
+        {
+          "info": {
+            "name": "Get an image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/v1/images/:uid/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a specific image by its unique identifier.\n\nThis endpoint fetches the details of an image.\n\n**Usage:**\n1. Get the image's details and URL\n\n**Requirements:**\n- Valid API token in Authorization header\n- Image must exist and be owned by the user\n\n**Returns:**\n- 200: Image details including metadata and URL\n- 401: Invalid or missing API token\n- 404: If the image does not exist"
+        },
+        {
+          "info": {
+            "name": "Upscale an image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/images/:uid/upscales/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Initiate an asynchronous image upscaling task.\n\nThis endpoint starts a background task to upscale an image to a higher resolution.\nSupported scales are \"2k\", \"4k\", \"6k\", and \"8k\".\nThe task runs asynchronously and the result can be retrieved later.\n\n**Usage:**\n1. Send a POST request with the image's unique identifier and upscale parameters\n2. Receive a message indicating the upscale task has been launched\n3. Check the status of the task using the `.../{uid}/upscales/{scale}/` endpoint\n4. Retrieve"
+        },
+        {
+          "info": {
+            "name": "Get image upscale",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/v1/images/:uid/upscales/:scale/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "scale",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the upscaled version of an image at a specific resolution.\n\nThis endpoint checks the status of an upscale task and returns the result if available.\n\n**Usage:**\n1. Send a GET request with the image's unique identifier and target upscale resolution\n2. Receive a message indicating the status of the upscale task if the upscaled image is not available\n3. Receive the upscaled image's details and URL if the upscaled image is available\n\n**Requirements:**\n- Valid API token in Authorization heade"
+        },
+        {
+          "info": {
+            "name": "Get the last image vector",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/v1/images/:uid/vectors/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the vectorized version of an image.\n\nThis endpoint checks the status of a vectorization task and returns the result if available.\n\n**Usage:**\n1. Send a GET request with the image's unique identifier\n2. Receive a message indicating the status of the vectorization task if the vectorized image is not available\n3. Receive the vectorized image's details with base64-encoded SVG content if the vectorized image is available\n\n**Requirements:**\n- Valid API token in Authorization header\n- Image mu"
+        },
+        {
+          "info": {
+            "name": "Vectorize an image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/images/:uid/vectors/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Initiate an asynchronous image vectorization task.\n\nThis endpoint starts a background task to vectorize an image.\nThe task runs asynchronously and the result can be retrieved later.\n\n**Usage:**\n1. Send a POST request with the image's unique identifier\n2. Receive a message indicating the vectorize task has been launched\n3. Check the status of the task using the `.../{uid}/vectorize/` endpoint\n4. Retrieve the vectorized image using the `.../{uid}/vectorize/` endpoint when it's ready\n\n**Requirement"
+        },
+        {
+          "info": {
+            "name": "Get the last background-removed image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/v1/images/:uid/remove-bg/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the image with background removed.\n\nMirrors the vectorization retrieval flow, returning base64-encoded PNG."
+        },
+        {
+          "info": {
+            "name": "Remove background from an image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/public/v1/images/:uid/remove-bg/",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Initiate an asynchronous background removal task for an image.\n\nMirrors the vectorization flow but uses background removal.\n\nReturns:\n- 202: Remove background task launched\n- 404: Image not found"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

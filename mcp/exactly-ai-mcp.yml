@@ -108,3 +108,9 @@ tools:
   method: GET
   path: /public/v1/images/{uid}/remove-bg/
   source_operation: openapi/exactly-ai-public-openapi-original.json#durer_backend_public_api_api_routes_images_get_removed_bg_image
+deployment:
+  mode: none
+  verified: derived
+  tools: 20
+  checked: '2026-08-12'
+  source: catalog MCP census
