@@ -36,6 +36,15 @@ modified: '2026-07-19'
 tags:
 - Company
 - Artificial Intelligence
+- Image-Generation
+- Generative AI
+- Creative Tools
+- Brand
+- Machine-Learning
+- Media
+tags_raw:
+- Company
+- Artificial Intelligence
 - Image Generation
 - Generative AI
 - Creative Tools
@@ -63,6 +72,8 @@ apis:
   humanURL: https://api.exactly.ai/public/docs/
   baseURL: https://api.exactly.ai
   tags:
+  - Models V1
+  tags_raw:
   - Models v1
   properties:
   - type: OpenAPI
