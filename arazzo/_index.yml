@@ -1,5 +1,5 @@
-generated: '2026-07-19'
-method: derived
+x-generated: '2026-07-19'
+x-method: derived
 workflows:
 - file: exactly-ai-train-and-generate.yml
   workflowId: train-and-generate

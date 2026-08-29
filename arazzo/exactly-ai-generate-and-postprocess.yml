@@ -1,11 +1,11 @@
 arazzo: 1.0.1
 info:
-  title: "Exactly.ai \u2014 generate and post-process an image"
+  title: "Exactly.ai — generate and post-process an image"
   version: 1.0.0
   summary: Generate an image from an existing style model, then upscale, vectorize, and remove its background.
 sourceDescriptions:
-- name: exactlyPublic
-  url: ../openapi/exactly-ai-public-openapi-original.json
+- name: imagesV1Api
+  url: ../openapi/exactly-ai-images-v1-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: generate-and-postprocess

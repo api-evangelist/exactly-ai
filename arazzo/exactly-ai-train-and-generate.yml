@@ -1,11 +1,14 @@
 arazzo: 1.0.1
 info:
-  title: "Exactly.ai \u2014 train a style model and generate images"
+  title: "Exactly.ai — train a style model and generate images"
   version: 1.0.0
   summary: Create a custom style model, train it on brand images, then generate on-brand images once ready.
 sourceDescriptions:
-- name: exactlyPublic
-  url: ../openapi/exactly-ai-public-openapi-original.json
+- name: imagesV1Api
+  url: ../openapi/exactly-ai-images-v1-api-openapi.yml
+  type: openapi
+- name: modelsV1Api
+  url: ../openapi/exactly-ai-models-v1-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: train-and-generate
