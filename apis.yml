@@ -84,7 +84,7 @@ apis:
   humanURL: https://api.exactly.ai/public/docs/
   baseURL: https://api.exactly.ai
   tags:
-  - Models V1
+  - Models v1
   tags_raw:
   - Models v1
   properties:
