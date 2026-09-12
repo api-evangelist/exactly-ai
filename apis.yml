@@ -101,6 +101,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Website
+  url: https://www.exactly.ai/
 - type: CapabilityMap
   url: capabilities/exactly-ai-capability-edges.yml
   name: Exactly Ai Business Capability Map
