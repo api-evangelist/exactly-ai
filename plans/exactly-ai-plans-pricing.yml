@@ -10,6 +10,11 @@ provenance:
   grounding: every price_text was found verbatim in the fetched page text
 audience: business-product
 pricing_basis: usage-other
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-09-20'
+  managed_tier: Volume plans
 published: true
 note: Credit costs listed per model (e.g. Nano Banana 1 credit, GPT Image 3 credit; Style training 16
   credits). API access listed as an Enterprise feature with no published API price.
