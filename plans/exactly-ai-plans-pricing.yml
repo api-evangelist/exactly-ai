@@ -1,0 +1,74 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://exactly.ai/pricing
+sources:
+- https://exactly.ai/pricing
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T120546
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: usage-other
+published: true
+note: Credit costs listed per model (e.g. Nano Banana 1 credit, GPT Image 3 credit; Style training 16
+  credits). API access listed as an Enterprise feature with no published API price.
+plan_count: 8
+currency: GBP
+plans:
+- name: Free
+  price_text: Free
+  period: none
+  included_quota: First training is free; 5 free credits a day
+  overage: £15 for 100 extra credits
+- name: Start for free (pay per download)
+  price_text: £75 per 1 licensed download
+  price: 75
+  currency: GBP
+  period: per-use
+  unit: licensed download
+  included_quota: Train style models for 50 credits each; 5 free credits a day
+  overage: £15 for 100 extra credits
+- name: Volume plans
+  price_text: From £56.25 per 1 licensed download
+  price: 56.25
+  currency: GBP
+  period: per-use
+  unit: licensed download
+  included_quota: Up to 55% volume discounts; balance renews monthly; if you commit to 50 licenses per
+    month
+  overage: £15 for 100 extra credits
+- name: Up to 10 licensed downloads (one-time purchase)
+  price_text: £75
+  price: 75
+  currency: GBP
+  period: one-time
+  unit: per 1 license & 50 credits
+  included_quota: 1,000 credits included
+- name: Up to 10 licensed downloads (pay monthly)
+  price_text: £67.5
+  price: 67.5
+  currency: GBP
+  period: month
+  unit: per 1 license & 50 credits
+  included_quota: 1,000 credits included; 10% off
+- name: Up to 10 licensed downloads (pay yearly)
+  price_text: £63.75
+  price: 63.75
+  currency: GBP
+  period: year
+  unit: per 1 license & 50 credits
+  included_quota: 1,000 credits included; 15% off
+- name: Up to 50 licensed downloads (pay yearly)
+  price_text: £56.25
+  price: 56.25
+  currency: GBP
+  period: year
+  unit: per 1 license & 50 credits
+  included_quota: 5,000 credits included; 25% off
+- name: Enterprise
+  price_text: Contact us
+  period: none
+  included_quota: Custom per license pricing, API access, SSO, priority support
+rate_limit_statements:
+- 5 free credits a day
