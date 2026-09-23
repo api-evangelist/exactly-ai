@@ -1,8 +1,7 @@
 {
   "provider": "exactly-ai",
   "sources": [
-    "exactly-ai-images-v1-api-openapi.yml",
-    "exactly-ai-models-v1-api-openapi.yml"
+    "_original/exactly-ai-public-openapi-original.json"
   ],
   "outputs": [
     "exactly-ai-images-v1-api-openapi.yml",
@@ -11,6 +10,15 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "exactly-ai-public-openapi-original.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "exactly-ai-public-openapi-original.json: declared missing tag: Images v1",
+    "exactly-ai-public-openapi-original.json: declared missing tag: Models v1",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "exactly-ai-images-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "exactly-ai-models-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

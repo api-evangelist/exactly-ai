@@ -1,11 +1,11 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Exactly Public Images v1 Models v1 API
+  title: Exactly Public Models v1 API
   version: 1.0.0
   description: ''
 servers: []
 tags:
-- name: Models v1
+- name: Models V1
 paths:
   /public/v1/models/:
     post:
@@ -57,7 +57,7 @@ paths:
 
         - 401: Invalid or missing API token'
       tags:
-      - Models v1
+      - Models V1
       requestBody:
         content:
           application/json:
@@ -147,7 +147,7 @@ paths:
 
         - 401: Invalid or missing API token'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
   /public/v1/models/{uid}/:
@@ -207,7 +207,7 @@ paths:
 
         - 404: Model not found or not accessible'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
     delete:
@@ -266,7 +266,7 @@ paths:
 
         - 404: Model not found'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
   /public/v1/models/{uid}/draft/:
@@ -335,7 +335,7 @@ paths:
 
         - 404: Model not found'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
   /public/v1/models/{uid}/train_images/:
@@ -415,7 +415,7 @@ paths:
 
         - 404: Model not found'
       tags:
-      - Models v1
+      - Models V1
       requestBody:
         content:
           multipart/form-data:
@@ -531,7 +531,7 @@ paths:
 
         - 404: Model not found'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
   /public/v1/models/{uid}/train_images/{image_uid}/:
@@ -600,7 +600,7 @@ paths:
 
         - 404: Model or image not found'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
   /public/v1/models/{uid}/train/:
@@ -679,7 +679,7 @@ paths:
 
         - 404: Model not found'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
   /public/v1/models/{uid}/cancel/:
@@ -751,7 +751,7 @@ paths:
 
         - 404: Model not found'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
   /public/v1/models/{uid}/train/progress/:
@@ -824,7 +824,7 @@ paths:
 
         - 404: Model not found'
       tags:
-      - Models v1
+      - Models V1
       security:
       - APITokenAuth: []
   /public/v1/models/{uid}/enhance_prompt/:
@@ -889,7 +889,7 @@ paths:
 
         - 500: Internal server error'
       tags:
-      - Models v1
+      - Models V1
       requestBody:
         content:
           application/json:
@@ -945,146 +945,6 @@ components:
       - max_reference_images
       title: GenerationParamsOut
       type: object
-    StylisationItemOut:
-      properties:
-        uid:
-          description: Unique identifier for the training image
-          format: uuid
-          title: Uid
-          type: string
-        image:
-          $ref: '#/components/schemas/StylisationItemImageOut'
-          description: Image details and URLs
-        filters:
-          description: List of filters applied to this image
-          items:
-            $ref: '#/components/schemas/StylisationItemFilterOut2'
-          title: Filters
-          type: array
-      required:
-      - uid
-      - image
-      - filters
-      title: StylisationItemOut
-      type: object
-    EnhancePromptIn:
-      properties:
-        prompt:
-          description: Text prompt to enhance
-          maxLength: 10000
-          minLength: 1
-          title: Prompt
-          type: string
-        n_images:
-          default: 1
-          description: Number of images which will be generated using the enhanced prompt
-          exclusiveMinimum: 0
-          title: N Images
-          type: integer
-      required:
-      - prompt
-      title: EnhancePromptIn
-      type: object
-    EnhancedPromptOut:
-      properties:
-        prompt:
-          description: Enhanced text prompt
-          title: Prompt
-          type: string
-      required:
-      - prompt
-      title: EnhancedPromptOut
-      type: object
-    ModelOut:
-      properties:
-        uid:
-          description: Unique identifier for the model
-          format: uuid
-          title: Uid
-          type: string
-        name:
-          description: Display name of the model
-          title: Name
-          type: string
-        active:
-          description: Whether the model is trained and ready for use
-          title: Active
-          type: boolean
-        custom_data:
-          anyOf:
-          - type: object
-          - type: 'null'
-          description: Custom JSON data provided by the user
-          title: Custom Data
-        status:
-          $ref: '#/components/schemas/ModelStatus'
-          description: Current status of the model
-      required:
-      - uid
-      - name
-      - active
-      - status
-      title: ModelOut
-      type: object
-    CreateModelOut:
-      properties:
-        uid:
-          description: Unique identifier for the created model
-          format: uuid
-          title: Uid
-          type: string
-      required:
-      - uid
-      title: CreateModelOut
-      type: object
-    CreateModelIn:
-      properties:
-        name:
-          description: Display name of the model
-          maxLength: 255
-          minLength: 1
-          title: Name
-          type: string
-        custom_data:
-          anyOf:
-          - type: object
-          - type: 'null'
-          description: Optional custom JSON data to store with the model (max 64KB)
-          title: Custom Data
-      required:
-      - name
-      title: CreateModelIn
-      type: object
-    DurerError:
-      properties:
-        message:
-          description: Error message
-          examples:
-          - Something went wrong
-          title: Message
-          type: string
-        client_message:
-          description: Error message for the client
-          examples:
-          - Something went wrong
-          title: Client Message
-          type: string
-      required:
-      - message
-      title: DurerError
-      type: object
-    UrlSetSchema:
-      description: An url set for an image.
-      properties:
-        hires:
-          $ref: '#/components/schemas/UrlSetEntrySchema'
-        lores:
-          $ref: '#/components/schemas/UrlSetEntrySchema'
-      required:
-      - hires
-      - lores
-      title: UrlSetSchema
-      type: object
     UrlSetEntrySchema:
       description: A single url data for an url set.
       properties:
@@ -1112,69 +972,6 @@ components:
       - url
       title: UrlSetEntrySchema
       type: object
-    ModelDetailOut:
-      properties:
-        uid:
-          description: Unique identifier for the model
-          format: uuid
-          title: Uid
-          type: string
-        name:
-          description: Display name of the model
-          title: Name
-          type: string
-        active:
-          description: Whether the model is trained and ready for use
-          title: Active
-          type: boolean
-        custom_data:
-          anyOf:
-          - type: object
-          - type: 'null'
-          description: Custom JSON data provided by the user
-          title: Custom Data
-        status:
-          $ref: '#/components/schemas/ModelStatus'
-          description: Current status of the model
-        generation_params:
-          description: Generation parameters per resolution tier
-          items:
-            $ref: '#/components/schemas/GenerationParamsOut'
-          title: Generation Params
-          type: array
-        available_purposes:
-          description: Available reference image purposes for this model
-          items:
-            type: string
-          title: Available Purposes
-          type: array
-        available_qualities:
-          description: Allowed values for the `quality` parameter on this model. Empty if quality is not supported.
-          items:
-            type: string
-          title: Available Qualities
-          type: array
-      required:
-      - uid
-      - name
-      - active
-      - status
-      - generation_params
-      - available_purposes
-      title: ModelDetailOut
-      type: object
-    DurerMessage:
-      properties:
-        message:
-          description: Message
-          examples:
-          - success
-          title: Message
-          type: string
-      required:
-      - message
-      title: DurerMessage
-      type: object
     ModelTrainProgressOut:
       properties:
         progress:
@@ -1186,6 +983,82 @@ components:
       required:
       - progress
       title: ModelTrainProgressOut
+      type: object
+    EnhancedPromptOut:
+      properties:
+        prompt:
+          description: Enhanced text prompt
+          title: Prompt
+          type: string
+      required:
+      - prompt
+      title: EnhancedPromptOut
+      type: object
+    StylisationItemImageOut:
+      properties:
+        uid:
+          description: Unique identifier for the image
+          format: uuid
+          title: Uid
+          type: string
+        url_set:
+          $ref: '#/components/schemas/UrlSetSchema'
+          description: Set of image URLs in different sizes
+        width:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Original image width in pixels
+          title: Width
+        height:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Original image height in pixels
+          title: Height
+      required:
+      - uid
+      - url_set
+      title: StylisationItemImageOut
+      type: object
+    PaginatedResponse_ModelOut_:
+      properties:
+        items:
+          description: The list of results
+          items:
+            $ref: '#/components/schemas/ModelOut'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        total_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Count
+      required:
+      - items
+      - count
+      title: PaginatedResponse[ModelOut]
+      type: object
+    DurerError:
+      properties:
+        message:
+          description: Error message
+          examples:
+          - Something went wrong
+          title: Message
+          type: string
+        client_message:
+          description: Error message for the client
+          examples:
+          - Something went wrong
+          title: Client Message
+          type: string
+      required:
+      - message
+      title: DurerError
       type: object
     PaginatedResponse_StylisationItemOut_:
       properties:
@@ -1239,32 +1112,180 @@ components:
       - is_ignored
       title: StylisationItemFilterOut2
       type: object
-    StylisationItemImageOut:
+    UrlSetSchema:
+      description: An url set for an image.
+      properties:
+        hires:
+          $ref: '#/components/schemas/UrlSetEntrySchema'
+        lores:
+          $ref: '#/components/schemas/UrlSetEntrySchema'
+      required:
+      - hires
+      - lores
+      title: UrlSetSchema
+      type: object
+    StylisationItemOut:
       properties:
         uid:
-          description: Unique identifier for the image
+          description: Unique identifier for the training image
           format: uuid
           title: Uid
           type: string
-        url_set:
-          $ref: '#/components/schemas/UrlSetSchema'
-          description: Set of image URLs in different sizes
-        width:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          description: Original image width in pixels
-          title: Width
-        height:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          description: Original image height in pixels
-          title: Height
+        image:
+          $ref: '#/components/schemas/StylisationItemImageOut'
+          description: Image details and URLs
+        filters:
+          description: List of filters applied to this image
+          items:
+            $ref: '#/components/schemas/StylisationItemFilterOut2'
+          title: Filters
+          type: array
       required:
       - uid
-      - url_set
-      title: StylisationItemImageOut
+      - image
+      - filters
+      title: StylisationItemOut
+      type: object
+    CreateModelOut:
+      properties:
+        uid:
+          description: Unique identifier for the created model
+          format: uuid
+          title: Uid
+          type: string
+      required:
+      - uid
+      title: CreateModelOut
+      type: object
+    EnhancePromptIn:
+      properties:
+        prompt:
+          description: Text prompt to enhance
+          maxLength: 10000
+          minLength: 1
+          title: Prompt
+          type: string
+        n_images:
+          default: 1
+          description: Number of images which will be generated using the enhanced prompt
+          exclusiveMinimum: 0
+          title: N Images
+          type: integer
+      required:
+      - prompt
+      title: EnhancePromptIn
+      type: object
+    DurerMessage:
+      properties:
+        message:
+          description: Message
+          examples:
+          - success
+          title: Message
+          type: string
+      required:
+      - message
+      title: DurerMessage
+      type: object
+    CreateModelIn:
+      properties:
+        name:
+          description: Display name of the model
+          maxLength: 255
+          minLength: 1
+          title: Name
+          type: string
+        custom_data:
+          anyOf:
+          - type: object
+          - type: 'null'
+          description: Optional custom JSON data to store with the model (max 64KB)
+          title: Custom Data
+      required:
+      - name
+      title: CreateModelIn
+      type: object
+    ModelOut:
+      properties:
+        uid:
+          description: Unique identifier for the model
+          format: uuid
+          title: Uid
+          type: string
+        name:
+          description: Display name of the model
+          title: Name
+          type: string
+        active:
+          description: Whether the model is trained and ready for use
+          title: Active
+          type: boolean
+        custom_data:
+          anyOf:
+          - type: object
+          - type: 'null'
+          description: Custom JSON data provided by the user
+          title: Custom Data
+        status:
+          $ref: '#/components/schemas/ModelStatus'
+          description: Current status of the model
+      required:
+      - uid
+      - name
+      - active
+      - status
+      title: ModelOut
+      type: object
+    ModelDetailOut:
+      properties:
+        uid:
+          description: Unique identifier for the model
+          format: uuid
+          title: Uid
+          type: string
+        name:
+          description: Display name of the model
+          title: Name
+          type: string
+        active:
+          description: Whether the model is trained and ready for use
+          title: Active
+          type: boolean
+        custom_data:
+          anyOf:
+          - type: object
+          - type: 'null'
+          description: Custom JSON data provided by the user
+          title: Custom Data
+        status:
+          $ref: '#/components/schemas/ModelStatus'
+          description: Current status of the model
+        generation_params:
+          description: Generation parameters per resolution tier
+          items:
+            $ref: '#/components/schemas/GenerationParamsOut'
+          title: Generation Params
+          type: array
+        available_purposes:
+          description: Available reference image purposes for this model
+          items:
+            type: string
+          title: Available Purposes
+          type: array
+        available_qualities:
+          description: Allowed values for the `quality` parameter on this model. Empty if quality is not supported.
+          items:
+            type: string
+          title: Available Qualities
+          type: array
+      required:
+      - uid
+      - name
+      - active
+      - status
+      - generation_params
+      - available_purposes
+      title: ModelDetailOut
       type: object
     ModelStatus:
       description: Model status enum for API responses
@@ -1275,27 +1296,6 @@ components:
       - deleted
       title: ModelStatus
       type: string
-    PaginatedResponse_ModelOut_:
-      properties:
-        items:
-          description: The list of results
-          items:
-            $ref: '#/components/schemas/ModelOut'
-          title: Items
-          type: array
-        count:
-          title: Count
-          type: integer
-        total_count:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Count
-      required:
-      - items
-      - count
-      title: PaginatedResponse[ModelOut]
-      type: object
   securitySchemes:
     APITokenAuth:
       type: http
