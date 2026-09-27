@@ -900,186 +900,57 @@ paths:
       - APITokenAuth: []
 components:
   schemas:
-    GenerationParamsOut:
-      properties:
-        supported_dimensions:
-          description: Supported image dimensions as [width, height] pairs
-          items:
-            maxItems: 2
-            minItems: 2
-            prefixItems:
-            - type: integer
-            - type: integer
-            type: array
-          title: Supported Dimensions
-          type: array
-        size_optional:
-          description: Whether the size parameter can be omitted
-          title: Size Optional
-          type: boolean
-        max_reference_images:
-          description: Maximum number of reference images allowed
-          title: Max Reference Images
-          type: integer
-        duration:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          description: Duration in seconds (video models only)
-          title: Duration
-        resolution:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          description: Resolution tier (e.g. 1024, 2048)
-          title: Resolution
-        fps:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          description: Frames per second (video models only)
-          title: Fps
-      required:
-      - supported_dimensions
-      - size_optional
-      - max_reference_images
-      title: GenerationParamsOut
-      type: object
-    UrlSetEntrySchema:
-      description: A single url data for an url set.
-      properties:
-        url:
-          format: uri
-          minLength: 1
-          title: Url
-          type: string
-        width:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Width
-        height:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Height
-        watermark:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Watermark
-      required:
-      - url
-      title: UrlSetEntrySchema
-      type: object
-    ModelTrainProgressOut:
-      properties:
-        progress:
-          description: Training progress in percentage (0-100)
-          maximum: 100
-          minimum: 0
-          title: Progress
-          type: integer
-      required:
-      - progress
-      title: ModelTrainProgressOut
-      type: object
-    EnhancedPromptOut:
-      properties:
-        prompt:
-          description: Enhanced text prompt
-          title: Prompt
-          type: string
-      required:
-      - prompt
-      title: EnhancedPromptOut
-      type: object
-    StylisationItemImageOut:
+    ModelStatus:
+      description: Model status enum for API responses
+      enum:
+      - draft
+      - training
+      - ready
+      - deleted
+      title: ModelStatus
+      type: string
+    ModelOut:
       properties:
         uid:
-          description: Unique identifier for the image
+          description: Unique identifier for the model
           format: uuid
           title: Uid
           type: string
-        url_set:
-          $ref: '#/components/schemas/UrlSetSchema'
-          description: Set of image URLs in different sizes
-        width:
+        name:
+          description: Display name of the model
+          title: Name
+          type: string
+        active:
+          description: Whether the model is trained and ready for use
+          title: Active
+          type: boolean
+        custom_data:
           anyOf:
-          - type: integer
+          - type: object
           - type: 'null'
-          description: Original image width in pixels
-          title: Width
-        height:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          description: Original image height in pixels
-          title: Height
+          description: Custom JSON data provided by the user
+          title: Custom Data
+        status:
+          $ref: '#/components/schemas/ModelStatus'
+          description: Current status of the model
       required:
       - uid
-      - url_set
-      title: StylisationItemImageOut
+      - name
+      - active
+      - status
+      title: ModelOut
       type: object
-    PaginatedResponse_ModelOut_:
-      properties:
-        items:
-          description: The list of results
-          items:
-            $ref: '#/components/schemas/ModelOut'
-          title: Items
-          type: array
-        count:
-          title: Count
-          type: integer
-        total_count:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Count
-      required:
-      - items
-      - count
-      title: PaginatedResponse[ModelOut]
-      type: object
-    DurerError:
+    DurerMessage:
       properties:
         message:
-          description: Error message
+          description: Message
           examples:
-          - Something went wrong
+          - success
           title: Message
-          type: string
-        client_message:
-          description: Error message for the client
-          examples:
-          - Something went wrong
-          title: Client Message
           type: string
       required:
       - message
-      title: DurerError
-      type: object
-    PaginatedResponse_StylisationItemOut_:
-      properties:
-        items:
-          description: The list of results
-          items:
-            $ref: '#/components/schemas/StylisationItemOut'
-          title: Items
-          type: array
-        count:
-          title: Count
-          type: integer
-        total_count:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Count
-      required:
-      - items
-      - count
-      title: PaginatedResponse[StylisationItemOut]
+      title: DurerMessage
       type: object
     StylisationItemFilterOut2:
       properties:
@@ -1112,81 +983,6 @@ components:
       - is_ignored
       title: StylisationItemFilterOut2
       type: object
-    UrlSetSchema:
-      description: An url set for an image.
-      properties:
-        hires:
-          $ref: '#/components/schemas/UrlSetEntrySchema'
-        lores:
-          $ref: '#/components/schemas/UrlSetEntrySchema'
-      required:
-      - hires
-      - lores
-      title: UrlSetSchema
-      type: object
-    StylisationItemOut:
-      properties:
-        uid:
-          description: Unique identifier for the training image
-          format: uuid
-          title: Uid
-          type: string
-        image:
-          $ref: '#/components/schemas/StylisationItemImageOut'
-          description: Image details and URLs
-        filters:
-          description: List of filters applied to this image
-          items:
-            $ref: '#/components/schemas/StylisationItemFilterOut2'
-          title: Filters
-          type: array
-      required:
-      - uid
-      - image
-      - filters
-      title: StylisationItemOut
-      type: object
-    CreateModelOut:
-      properties:
-        uid:
-          description: Unique identifier for the created model
-          format: uuid
-          title: Uid
-          type: string
-      required:
-      - uid
-      title: CreateModelOut
-      type: object
-    EnhancePromptIn:
-      properties:
-        prompt:
-          description: Text prompt to enhance
-          maxLength: 10000
-          minLength: 1
-          title: Prompt
-          type: string
-        n_images:
-          default: 1
-          description: Number of images which will be generated using the enhanced prompt
-          exclusiveMinimum: 0
-          title: N Images
-          type: integer
-      required:
-      - prompt
-      title: EnhancePromptIn
-      type: object
-    DurerMessage:
-      properties:
-        message:
-          description: Message
-          examples:
-          - success
-          title: Message
-          type: string
-      required:
-      - message
-      title: DurerMessage
-      type: object
     CreateModelIn:
       properties:
         name:
@@ -1205,36 +1001,71 @@ components:
       - name
       title: CreateModelIn
       type: object
-    ModelOut:
+    UrlSetSchema:
+      description: An url set for an image.
+      properties:
+        hires:
+          $ref: '#/components/schemas/UrlSetEntrySchema'
+        lores:
+          $ref: '#/components/schemas/UrlSetEntrySchema'
+      required:
+      - hires
+      - lores
+      title: UrlSetSchema
+      type: object
+    EnhancedPromptOut:
+      properties:
+        prompt:
+          description: Enhanced text prompt
+          title: Prompt
+          type: string
+      required:
+      - prompt
+      title: EnhancedPromptOut
+      type: object
+    ModelTrainProgressOut:
+      properties:
+        progress:
+          description: Training progress in percentage (0-100)
+          maximum: 100
+          minimum: 0
+          title: Progress
+          type: integer
+      required:
+      - progress
+      title: ModelTrainProgressOut
+      type: object
+    PaginatedResponse_StylisationItemOut_:
+      properties:
+        items:
+          description: The list of results
+          items:
+            $ref: '#/components/schemas/StylisationItemOut'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        total_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Count
+      required:
+      - items
+      - count
+      title: PaginatedResponse[StylisationItemOut]
+      type: object
+    CreateModelOut:
       properties:
         uid:
-          description: Unique identifier for the model
+          description: Unique identifier for the created model
           format: uuid
           title: Uid
           type: string
-        name:
-          description: Display name of the model
-          title: Name
-          type: string
-        active:
-          description: Whether the model is trained and ready for use
-          title: Active
-          type: boolean
-        custom_data:
-          anyOf:
-          - type: object
-          - type: 'null'
-          description: Custom JSON data provided by the user
-          title: Custom Data
-        status:
-          $ref: '#/components/schemas/ModelStatus'
-          description: Current status of the model
       required:
       - uid
-      - name
-      - active
-      - status
-      title: ModelOut
+      title: CreateModelOut
       type: object
     ModelDetailOut:
       properties:
@@ -1287,15 +1118,184 @@ components:
       - available_purposes
       title: ModelDetailOut
       type: object
-    ModelStatus:
-      description: Model status enum for API responses
-      enum:
-      - draft
-      - training
-      - ready
-      - deleted
-      title: ModelStatus
-      type: string
+    UrlSetEntrySchema:
+      description: A single url data for an url set.
+      properties:
+        url:
+          format: uri
+          minLength: 1
+          title: Url
+          type: string
+        width:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Width
+        height:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Height
+        watermark:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Watermark
+      required:
+      - url
+      title: UrlSetEntrySchema
+      type: object
+    StylisationItemImageOut:
+      properties:
+        uid:
+          description: Unique identifier for the image
+          format: uuid
+          title: Uid
+          type: string
+        url_set:
+          $ref: '#/components/schemas/UrlSetSchema'
+          description: Set of image URLs in different sizes
+        width:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Original image width in pixels
+          title: Width
+        height:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Original image height in pixels
+          title: Height
+      required:
+      - uid
+      - url_set
+      title: StylisationItemImageOut
+      type: object
+    DurerError:
+      properties:
+        message:
+          description: Error message
+          examples:
+          - Something went wrong
+          title: Message
+          type: string
+        client_message:
+          description: Error message for the client
+          examples:
+          - Something went wrong
+          title: Client Message
+          type: string
+      required:
+      - message
+      title: DurerError
+      type: object
+    StylisationItemOut:
+      properties:
+        uid:
+          description: Unique identifier for the training image
+          format: uuid
+          title: Uid
+          type: string
+        image:
+          $ref: '#/components/schemas/StylisationItemImageOut'
+          description: Image details and URLs
+        filters:
+          description: List of filters applied to this image
+          items:
+            $ref: '#/components/schemas/StylisationItemFilterOut2'
+          title: Filters
+          type: array
+      required:
+      - uid
+      - image
+      - filters
+      title: StylisationItemOut
+      type: object
+    PaginatedResponse_ModelOut_:
+      properties:
+        items:
+          description: The list of results
+          items:
+            $ref: '#/components/schemas/ModelOut'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        total_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Count
+      required:
+      - items
+      - count
+      title: PaginatedResponse[ModelOut]
+      type: object
+    EnhancePromptIn:
+      properties:
+        prompt:
+          description: Text prompt to enhance
+          maxLength: 10000
+          minLength: 1
+          title: Prompt
+          type: string
+        n_images:
+          default: 1
+          description: Number of images which will be generated using the enhanced prompt
+          exclusiveMinimum: 0
+          title: N Images
+          type: integer
+      required:
+      - prompt
+      title: EnhancePromptIn
+      type: object
+    GenerationParamsOut:
+      properties:
+        supported_dimensions:
+          description: Supported image dimensions as [width, height] pairs
+          items:
+            maxItems: 2
+            minItems: 2
+            prefixItems:
+            - type: integer
+            - type: integer
+            type: array
+          title: Supported Dimensions
+          type: array
+        size_optional:
+          description: Whether the size parameter can be omitted
+          title: Size Optional
+          type: boolean
+        max_reference_images:
+          description: Maximum number of reference images allowed
+          title: Max Reference Images
+          type: integer
+        duration:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Duration in seconds (video models only)
+          title: Duration
+        resolution:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Resolution tier (e.g. 1024, 2048)
+          title: Resolution
+        fps:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Frames per second (video models only)
+          title: Fps
+      required:
+      - supported_dimensions
+      - size_optional
+      - max_reference_images
+      title: GenerationParamsOut
+      type: object
   securitySchemes:
     APITokenAuth:
       type: http

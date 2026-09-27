@@ -49,11 +49,11 @@ modified: '2026-07-19'
 tags:
 - Company
 - Artificial Intelligence
-- Image-Generation
+- Image Generation
 - Generative AI
 - Creative Tools
 - Brands
-- Machine-Learning
+- Machine Learning
 - Media
 tags_raw:
 - Company
@@ -64,6 +64,8 @@ tags_raw:
 - Brand
 - Machine Learning
 - Media
+- Image-Generation
+- Machine-Learning
 apis:
 - aid: exactly-ai:exactly-ai-images-v1-api
   name: Exactly Ai Images v1 API

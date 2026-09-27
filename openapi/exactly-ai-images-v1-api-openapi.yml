@@ -648,71 +648,6 @@ paths:
       - APITokenAuth: []
 components:
   schemas:
-    RemoveBgImageOut:
-      properties:
-        uid:
-          description: Unique identifier for the background-removed image
-          format: uuid
-          title: Uid
-          type: string
-        base64:
-          description: Base64-encoded PNG image data with background removed
-          title: Base64
-          type: string
-      required:
-      - uid
-      - base64
-      title: RemoveBgImageOut
-      type: object
-    UpscaleImageIn:
-      properties:
-        scale:
-          description: Upscale resolution
-          enum:
-          - 2k
-          - 4k
-          - 6k
-          - 8k
-          title: Scale
-          type: string
-      required:
-      - scale
-      title: UpscaleImageIn
-      type: object
-    DurerError:
-      properties:
-        message:
-          description: Error message
-          examples:
-          - Something went wrong
-          title: Message
-          type: string
-        client_message:
-          description: Error message for the client
-          examples:
-          - Something went wrong
-          title: Client Message
-          type: string
-      required:
-      - message
-      title: DurerError
-      type: object
-    VectorImageOut:
-      properties:
-        uid:
-          description: Unique identifier for the vector image
-          format: uuid
-          title: Uid
-          type: string
-        base64:
-          description: Base64-encoded vector image data
-          title: Base64
-          type: string
-      required:
-      - uid
-      - base64
-      title: VectorImageOut
-      type: object
     GeneratedImageOut:
       properties:
         uid:
@@ -743,6 +678,22 @@ components:
       - url
       title: GeneratedImageOut
       type: object
+    RemoveBgImageOut:
+      properties:
+        uid:
+          description: Unique identifier for the background-removed image
+          format: uuid
+          title: Uid
+          type: string
+        base64:
+          description: Base64-encoded PNG image data with background removed
+          title: Base64
+          type: string
+      required:
+      - uid
+      - base64
+      title: RemoveBgImageOut
+      type: object
     GenerateImageOut:
       description: Response for image generation requests.
       properties:
@@ -758,6 +709,18 @@ components:
           - type: 'null'
           description: Error details if generation failed
       title: GenerateImageOut
+      type: object
+    DurerMessage:
+      properties:
+        message:
+          description: Message
+          examples:
+          - success
+          title: Message
+          type: string
+      required:
+      - message
+      title: DurerMessage
       type: object
     UpscaleImageOut:
       properties:
@@ -789,33 +752,21 @@ components:
       - url
       title: UpscaleImageOut
       type: object
-    GenerationErrorOut:
-      description: Error details for generation failures.
+    VectorImageOut:
       properties:
-        error_code:
-          description: Error code identifying the type of error
-          title: Error Code
+        uid:
+          description: Unique identifier for the vector image
+          format: uuid
+          title: Uid
           type: string
-        message:
-          description: Error message
-          title: Message
+        base64:
+          description: Base64-encoded vector image data
+          title: Base64
           type: string
       required:
-      - error_code
-      - message
-      title: GenerationErrorOut
-      type: object
-    DurerMessage:
-      properties:
-        message:
-          description: Message
-          examples:
-          - success
-          title: Message
-          type: string
-      required:
-      - message
-      title: DurerMessage
+      - uid
+      - base64
+      title: VectorImageOut
       type: object
     ReferenceImageIn:
       description: A reference image to guide generation.
@@ -855,6 +806,21 @@ components:
           description: Influence strength (0.01-1). Only applicable for 'sketch' purpose. Higher values = stronger influence.
           title: Strength
       title: ReferenceImageIn
+      type: object
+    UpscaleImageIn:
+      properties:
+        scale:
+          description: Upscale resolution
+          enum:
+          - 2k
+          - 4k
+          - 6k
+          - 8k
+          title: Scale
+          type: string
+      required:
+      - scale
+      title: UpscaleImageIn
       type: object
     GenerateImageIn:
       properties:
@@ -912,6 +878,40 @@ components:
       - prompt
       - model_uid
       title: GenerateImageIn
+      type: object
+    GenerationErrorOut:
+      description: Error details for generation failures.
+      properties:
+        error_code:
+          description: Error code identifying the type of error
+          title: Error Code
+          type: string
+        message:
+          description: Error message
+          title: Message
+          type: string
+      required:
+      - error_code
+      - message
+      title: GenerationErrorOut
+      type: object
+    DurerError:
+      properties:
+        message:
+          description: Error message
+          examples:
+          - Something went wrong
+          title: Message
+          type: string
+        client_message:
+          description: Error message for the client
+          examples:
+          - Something went wrong
+          title: Client Message
+          type: string
+      required:
+      - message
+      title: DurerError
       type: object
   securitySchemes:
     APITokenAuth:
