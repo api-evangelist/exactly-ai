@@ -678,6 +678,21 @@ components:
       - url
       title: GeneratedImageOut
       type: object
+    UpscaleImageIn:
+      properties:
+        scale:
+          description: Upscale resolution
+          enum:
+          - 2k
+          - 4k
+          - 6k
+          - 8k
+          title: Scale
+          type: string
+      required:
+      - scale
+      title: UpscaleImageIn
+      type: object
     RemoveBgImageOut:
       properties:
         uid:
@@ -694,22 +709,6 @@ components:
       - base64
       title: RemoveBgImageOut
       type: object
-    GenerateImageOut:
-      description: Response for image generation requests.
-      properties:
-        images:
-          description: List of generated images with metadata and URLs
-          items:
-            $ref: '#/components/schemas/GeneratedImageOut'
-          title: Images
-          type: array
-        error:
-          anyOf:
-          - $ref: '#/components/schemas/GenerationErrorOut'
-          - type: 'null'
-          description: Error details if generation failed
-      title: GenerateImageOut
-      type: object
     DurerMessage:
       properties:
         message:
@@ -721,6 +720,22 @@ components:
       required:
       - message
       title: DurerMessage
+      type: object
+    GenerationErrorOut:
+      description: Error details for generation failures.
+      properties:
+        error_code:
+          description: Error code identifying the type of error
+          title: Error Code
+          type: string
+        message:
+          description: Error message
+          title: Message
+          type: string
+      required:
+      - error_code
+      - message
+      title: GenerationErrorOut
       type: object
     UpscaleImageOut:
       properties:
@@ -751,6 +766,24 @@ components:
       - uid
       - url
       title: UpscaleImageOut
+      type: object
+    DurerError:
+      properties:
+        message:
+          description: Error message
+          examples:
+          - Something went wrong
+          title: Message
+          type: string
+        client_message:
+          description: Error message for the client
+          examples:
+          - Something went wrong
+          title: Client Message
+          type: string
+      required:
+      - message
+      title: DurerError
       type: object
     VectorImageOut:
       properties:
@@ -806,21 +839,6 @@ components:
           description: Influence strength (0.01-1). Only applicable for 'sketch' purpose. Higher values = stronger influence.
           title: Strength
       title: ReferenceImageIn
-      type: object
-    UpscaleImageIn:
-      properties:
-        scale:
-          description: Upscale resolution
-          enum:
-          - 2k
-          - 4k
-          - 6k
-          - 8k
-          title: Scale
-          type: string
-      required:
-      - scale
-      title: UpscaleImageIn
       type: object
     GenerateImageIn:
       properties:
@@ -879,39 +897,21 @@ components:
       - model_uid
       title: GenerateImageIn
       type: object
-    GenerationErrorOut:
-      description: Error details for generation failures.
+    GenerateImageOut:
+      description: Response for image generation requests.
       properties:
-        error_code:
-          description: Error code identifying the type of error
-          title: Error Code
-          type: string
-        message:
-          description: Error message
-          title: Message
-          type: string
-      required:
-      - error_code
-      - message
-      title: GenerationErrorOut
-      type: object
-    DurerError:
-      properties:
-        message:
-          description: Error message
-          examples:
-          - Something went wrong
-          title: Message
-          type: string
-        client_message:
-          description: Error message for the client
-          examples:
-          - Something went wrong
-          title: Client Message
-          type: string
-      required:
-      - message
-      title: DurerError
+        images:
+          description: List of generated images with metadata and URLs
+          items:
+            $ref: '#/components/schemas/GeneratedImageOut'
+          title: Images
+          type: array
+        error:
+          anyOf:
+          - $ref: '#/components/schemas/GenerationErrorOut'
+          - type: 'null'
+          description: Error details if generation failed
+      title: GenerateImageOut
       type: object
   securitySchemes:
     APITokenAuth:
