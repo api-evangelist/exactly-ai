@@ -1,0 +1,12 @@
+{
+ "url": "https://api.exactly.ai/public/openapi.json",
+ "requested_url": "https://api.exactly.ai/public/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 53382,
+ "sha256": "f02030a8ee815cb12c385897582da48594d52052b1875d0c7f5b682cea415190",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.952), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
