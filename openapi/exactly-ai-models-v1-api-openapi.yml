@@ -900,56 +900,33 @@ paths:
       - APITokenAuth: []
 components:
   schemas:
-    PaginatedResponse_StylisationItemOut_:
+    EnhancedPromptOut:
       properties:
-        items:
-          description: The list of results
-          items:
-            $ref: '#/components/schemas/StylisationItemOut'
-          title: Items
-          type: array
-        count:
-          title: Count
-          type: integer
-        total_count:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Count
-      required:
-      - items
-      - count
-      title: PaginatedResponse[StylisationItemOut]
-      type: object
-    ModelTrainProgressOut:
-      properties:
-        progress:
-          description: Training progress in percentage (0-100)
-          maximum: 100
-          minimum: 0
-          title: Progress
-          type: integer
-      required:
-      - progress
-      title: ModelTrainProgressOut
-      type: object
-    DurerError:
-      properties:
-        message:
-          description: Error message
-          examples:
-          - Something went wrong
-          title: Message
-          type: string
-        client_message:
-          description: Error message for the client
-          examples:
-          - Something went wrong
-          title: Client Message
+        prompt:
+          description: Enhanced text prompt
+          title: Prompt
           type: string
       required:
-      - message
-      title: DurerError
+      - prompt
+      title: EnhancedPromptOut
+      type: object
+    EnhancePromptIn:
+      properties:
+        prompt:
+          description: Text prompt to enhance
+          maxLength: 10000
+          minLength: 1
+          title: Prompt
+          type: string
+        n_images:
+          default: 1
+          description: Number of images which will be generated using the enhanced prompt
+          exclusiveMinimum: 0
+          title: N Images
+          type: integer
+      required:
+      - prompt
+      title: EnhancePromptIn
       type: object
     CreateModelOut:
       properties:
@@ -962,36 +939,66 @@ components:
       - uid
       title: CreateModelOut
       type: object
-    StylisationItemFilterOut2:
+    StylisationItemImageOut:
       properties:
-        name:
-          description: Name of the filter applied
-          title: Name
+        uid:
+          description: Unique identifier for the image
+          format: uuid
+          title: Uid
           type: string
-        level:
-          description: Filter severity level (HARD or SOFT)
-          title: Level
-          type: string
-        is_triggered:
-          description: Whether this filter was triggered
-          title: Is Triggered
-          type: boolean
-        reason:
+        url_set:
+          $ref: '#/components/schemas/UrlSetSchema'
+          description: Set of image URLs in different sizes
+        width:
           anyOf:
-          - type: string
+          - type: integer
           - type: 'null'
-          description: Reason why the filter was triggered
-          title: Reason
-        is_ignored:
-          description: Whether this filter result is ignored
-          title: Is Ignored
-          type: boolean
+          description: Original image width in pixels
+          title: Width
+        height:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Original image height in pixels
+          title: Height
       required:
-      - name
-      - level
-      - is_triggered
-      - is_ignored
-      title: StylisationItemFilterOut2
+      - uid
+      - url_set
+      title: StylisationItemImageOut
+      type: object
+    StylisationItemOut:
+      properties:
+        uid:
+          description: Unique identifier for the training image
+          format: uuid
+          title: Uid
+          type: string
+        image:
+          $ref: '#/components/schemas/StylisationItemImageOut'
+          description: Image details and URLs
+        filters:
+          description: List of filters applied to this image
+          items:
+            $ref: '#/components/schemas/StylisationItemFilterOut2'
+          title: Filters
+          type: array
+      required:
+      - uid
+      - image
+      - filters
+      title: StylisationItemOut
+      type: object
+    UrlSetSchema:
+      description: An url set for an image.
+      properties:
+        hires:
+          $ref: '#/components/schemas/UrlSetEntrySchema'
+        lores:
+          $ref: '#/components/schemas/UrlSetEntrySchema'
+      required:
+      - hires
+      - lores
+      title: UrlSetSchema
       type: object
     ModelOut:
       properties:
@@ -1024,6 +1031,97 @@ components:
       - status
       title: ModelOut
       type: object
+    ModelTrainProgressOut:
+      properties:
+        progress:
+          description: Training progress in percentage (0-100)
+          maximum: 100
+          minimum: 0
+          title: Progress
+          type: integer
+      required:
+      - progress
+      title: ModelTrainProgressOut
+      type: object
+    StylisationItemFilterOut2:
+      properties:
+        name:
+          description: Name of the filter applied
+          title: Name
+          type: string
+        level:
+          description: Filter severity level (HARD or SOFT)
+          title: Level
+          type: string
+        is_triggered:
+          description: Whether this filter was triggered
+          title: Is Triggered
+          type: boolean
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Reason why the filter was triggered
+          title: Reason
+        is_ignored:
+          description: Whether this filter result is ignored
+          title: Is Ignored
+          type: boolean
+      required:
+      - name
+      - level
+      - is_triggered
+      - is_ignored
+      title: StylisationItemFilterOut2
+      type: object
+    PaginatedResponse_ModelOut_:
+      properties:
+        items:
+          description: The list of results
+          items:
+            $ref: '#/components/schemas/ModelOut'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        total_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Count
+      required:
+      - items
+      - count
+      title: PaginatedResponse[ModelOut]
+      type: object
+    DurerError:
+      properties:
+        message:
+          description: Error message
+          examples:
+          - Something went wrong
+          title: Message
+          type: string
+        client_message:
+          description: Error message for the client
+          examples:
+          - Something went wrong
+          title: Client Message
+          type: string
+      required:
+      - message
+      title: DurerError
+      type: object
+    ModelStatus:
+      description: Model status enum for API responses
+      enum:
+      - draft
+      - training
+      - ready
+      - deleted
+      title: ModelStatus
+      type: string
     GenerationParamsOut:
       properties:
         supported_dimensions:
@@ -1069,48 +1167,6 @@ components:
       - max_reference_images
       title: GenerationParamsOut
       type: object
-    PaginatedResponse_ModelOut_:
-      properties:
-        items:
-          description: The list of results
-          items:
-            $ref: '#/components/schemas/ModelOut'
-          title: Items
-          type: array
-        count:
-          title: Count
-          type: integer
-        total_count:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Count
-      required:
-      - items
-      - count
-      title: PaginatedResponse[ModelOut]
-      type: object
-    UrlSetSchema:
-      description: An url set for an image.
-      properties:
-        hires:
-          $ref: '#/components/schemas/UrlSetEntrySchema'
-        lores:
-          $ref: '#/components/schemas/UrlSetEntrySchema'
-      required:
-      - hires
-      - lores
-      title: UrlSetSchema
-      type: object
-    ModelStatus:
-      description: Model status enum for API responses
-      enum:
-      - draft
-      - training
-      - ready
-      - deleted
-      title: ModelStatus
-      type: string
     UrlSetEntrySchema:
       description: A single url data for an url set.
       properties:
@@ -1138,42 +1194,17 @@ components:
       - url
       title: UrlSetEntrySchema
       type: object
-    EnhancedPromptOut:
+    DurerMessage:
       properties:
-        prompt:
-          description: Enhanced text prompt
-          title: Prompt
+        message:
+          description: Message
+          examples:
+          - success
+          title: Message
           type: string
       required:
-      - prompt
-      title: EnhancedPromptOut
-      type: object
-    StylisationItemImageOut:
-      properties:
-        uid:
-          description: Unique identifier for the image
-          format: uuid
-          title: Uid
-          type: string
-        url_set:
-          $ref: '#/components/schemas/UrlSetSchema'
-          description: Set of image URLs in different sizes
-        width:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          description: Original image width in pixels
-          title: Width
-        height:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          description: Original image height in pixels
-          title: Height
-      required:
-      - uid
-      - url_set
-      title: StylisationItemImageOut
+      - message
+      title: DurerMessage
       type: object
     CreateModelIn:
       properties:
@@ -1192,6 +1223,27 @@ components:
       required:
       - name
       title: CreateModelIn
+      type: object
+    PaginatedResponse_StylisationItemOut_:
+      properties:
+        items:
+          description: The list of results
+          items:
+            $ref: '#/components/schemas/StylisationItemOut'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        total_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Count
+      required:
+      - items
+      - count
+      title: PaginatedResponse[StylisationItemOut]
       type: object
     ModelDetailOut:
       properties:
@@ -1243,58 +1295,6 @@ components:
       - generation_params
       - available_purposes
       title: ModelDetailOut
-      type: object
-    EnhancePromptIn:
-      properties:
-        prompt:
-          description: Text prompt to enhance
-          maxLength: 10000
-          minLength: 1
-          title: Prompt
-          type: string
-        n_images:
-          default: 1
-          description: Number of images which will be generated using the enhanced prompt
-          exclusiveMinimum: 0
-          title: N Images
-          type: integer
-      required:
-      - prompt
-      title: EnhancePromptIn
-      type: object
-    StylisationItemOut:
-      properties:
-        uid:
-          description: Unique identifier for the training image
-          format: uuid
-          title: Uid
-          type: string
-        image:
-          $ref: '#/components/schemas/StylisationItemImageOut'
-          description: Image details and URLs
-        filters:
-          description: List of filters applied to this image
-          items:
-            $ref: '#/components/schemas/StylisationItemFilterOut2'
-          title: Filters
-          type: array
-      required:
-      - uid
-      - image
-      - filters
-      title: StylisationItemOut
-      type: object
-    DurerMessage:
-      properties:
-        message:
-          description: Message
-          examples:
-          - success
-          title: Message
-          type: string
-      required:
-      - message
-      title: DurerMessage
       type: object
   securitySchemes:
     APITokenAuth:
