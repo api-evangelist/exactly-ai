@@ -64,6 +64,137 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Exactly Ai is a company surfaced as a portfolio company of speedinvest and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Exactly.ai is a private, brand-safe AI image generation platform for brands, agencies, and creative teams. It trains custom AI "style" models from as few as ten brand images, then generates hundreds of on-brand image variations with consistent look and feel. Beyond generation the platform edits and animates images, pins characters, upscales to 8K, vectorizes to SVG, and removes backgrounds, with outputs fully licensed for commercial use and original artists compensated when their styles are used. Exactly.ai exposes an enterprise Public API (bearer-token authenticated) for programmatic model creation and training, image generation, upscaling, vectorization, and background removal, alongside the e.studio web product. The company is a portfolio company of Speedinvest and is tracked in the API Evangelist network.
 
-Backed by: speedinvest
+**Areas:** Company · Artificial Intelligence · Image Generation · Generative AI · Creative Tools · Brands · Machine Learning · Media
+
+## Exactly Ai on APIs.io
+
+Everything profiled for Exactly Ai is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/exactly-ai/](https://apis.io/providers/exactly-ai/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Exactly Ai Images v1 API](https://apis.io/apis/exactly-ai/exactly-ai-images-v1-api/) — The Images v1 API from Exactly Ai — 6 operation(s) for images v1.
+- [Exactly Ai Models v1 API](https://apis.io/apis/exactly-ai/exactly-ai-models-v1-api/) — The Models v1 API from Exactly Ai — 9 operation(s) for models v1.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Arazzo workflows (2)
+
+Multi-step workflows that chain operations into a business task.
+
+- [Exactly.ai — generate and post-process an image](https://apis.io/arazzos/exactly-ai/exactly-ai-generate-and-postprocess/)
+- [Exactly.ai — train a style model and generate images](https://apis.io/arazzos/exactly-ai/exactly-ai-train-and-generate/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [exactly-ai](https://apis.io/servers/exactly-ai/exactly-ai/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Exactly Ai Agentic Access](https://apis.io/agentic-access/exactly-ai/exactly-ai-agentic-access/)
+
+#### Collections (2)
+
+Postman and Open Collection request collections.
+
+- [Exactly Public Images v1 API](https://apis.io/collections/exactly-ai/open-exactly-ai-images-v1-api/)
+- [Exactly Public Images v1 Models v1 API](https://apis.io/collections/exactly-ai/open-exactly-ai-models-v1-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Exactly Ai Public Overlay](https://apis.io/overlays/exactly-ai/exactly-ai-public-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Exactly Ai Authentication](https://apis.io/security/exactly-ai/exactly-ai-authentication/)
+- [Exactly Ai Domain Security](https://apis.io/security/exactly-ai/exactly-ai-domain-security/)
+
+#### Plans and pricing (2)
+
+Published plans, tiers and prices.
+
+- [Exactly Ai Plans Pricing](https://apis.io/plans/exactly-ai/exactly-ai-plans-pricing/)
+- [Exactly Ai Price Estimates](https://apis.io/plans/exactly-ai/exactly-ai-price-estimates/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.exactly.ai/)
+- [Documentation](https://api.exactly.ai/public/docs/)
+- [Getting started](https://exactly.ai/help-center/collections/getting-started)
+- [API reference](https://api.exactly.ai/public/docs/)
+- [Pricing](https://exactly.ai/pricing)
+- [Sign up](https://exactly.ai/book-a-demo)
+- [Support](https://exactly.ai/help-center)
+- [Blog](https://exactly.ai/community/blog)
+- [Compliance](https://exactly.ai/help-center/data-protection-privacy-ico-registered-private-by-default)
+- [Terms of service](https://exactly.ai/terms)
+- [Privacy policy](https://exactly.ai/privacy-policy)
+- [GitHub](https://github.com/exactly-ai)
+
+## API Evangelist rating
+
+**Kin Score 50.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 45.9 |
+| Contract governance | 18.2 |
+| Operational transparency | 2.6 |
+| Developer ergonomics | 58.9 |
+| Access clarity | 84.2 |
+
+**Agent readiness 29.7** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 27.3** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/exactly-ai/](https://apis.io/providers/exactly-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Exactly Ai: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/exactly-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
